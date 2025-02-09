@@ -20,14 +20,5 @@ const itemSchema = new Schema({
     }
 })
    const Item = mongoose.models.items || mongoose.model("Item",itemSchema)
- 
-const categorySchema = new mongoose.Schema({
-    name: {
-        type:String,
-        required:true
-    }
-})
 
- const Category = mongoose.models.categories || mongoose.model("Category", categorySchema)
-
-export default {Item,Category}
+export default Item
