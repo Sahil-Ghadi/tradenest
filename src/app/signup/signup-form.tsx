@@ -10,7 +10,7 @@ import axios from "axios"
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [user, setUser] = useState({
-    username:'',
+    name:'',
     email: '',
     password: '',
     role: ''
@@ -32,8 +32,8 @@ export function SignUpForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
        <div className="space-y-2">
-        <Label htmlFor="username">Username</Label>
-        <Input id="username" placeholder="enter username" value={user.username} onChange={(e) => setUser({...user, username: e.target.value})} required />
+        <Label htmlFor="Name">Name</Label>
+        <Input id="Name" placeholder="enter Name" value={user.name} onChange={(e) => setUser({...user, name: e.target.value})} required />
       </div>
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>

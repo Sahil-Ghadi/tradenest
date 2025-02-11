@@ -6,7 +6,7 @@ import Link from "next/link"
 
 export default function LoginForm() {
   const [user, setUser] = useState({
-    username:'',
+    email:'',
     password: ''
   })
   const [error, setError] = useState("")
@@ -14,7 +14,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError("")
+    
     
   }
 
@@ -26,14 +26,14 @@ export default function LoginForm() {
         </label>
         <div className="mt-1">
           <input
-            id="username"
-            name="username"
-            type="username"
-            autoComplete="username"
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
             required
             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            value={user.username}
-            onChange={(e) => setUser({...user,username:e.target.value})}
+            value={user.email}
+            onChange={(e) => setUser({...user,email:e.target.value})}
           />
         </div>
       </div>
