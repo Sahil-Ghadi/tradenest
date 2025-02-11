@@ -1,3 +1,5 @@
+"use client"
+
 import axios from "axios";
 import { useState,useEffect } from "react";
 import ProductCard from "@/components/ProductCard"
