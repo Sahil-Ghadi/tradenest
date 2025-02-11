@@ -2,9 +2,11 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+// import { Input } from "@/components/ui/input"
+// import { Label } from "@/components/ui/label"
+import Link from "next/link";
+
+//import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import axios from "axios"
 
 export function SignUpForm() {
@@ -30,38 +32,72 @@ export function SignUpForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-       <div className="space-y-2">
-        <Label htmlFor="username">Username</Label>
-        <Input id="username" placeholder="enter username" value={user.username} onChange={(e) => setUser({...user, username: e.target.value})} required />
+    <form onSubmit={onSubmit}>
+      <div className="flex flex-col items-center justify-center">
+        <div className="w-[300px]">
+          <input
+            id="username"
+            name="username"
+            type="username"
+            autoComplete="username"
+            placeholder="Username"
+            required
+            className=" w-[300px] h-[42px] mb-2 pl-4 py-2 border bg-gray-100 rounded-xl placeholder-gray-400  outline-gray-300"
+            value={user.username}
+            onChange={(e) => setUser({ ...user, username: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="Email"
+            required
+            className="pl-4 w-[300px] h-[42px] py-2 mb-2 border bg-gray-100 rounded-xl placeholder-gray-400 outline-gray-300"
+            value={user.email}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            placeholder="Password"
+            required
+            className="pl-4 w-[300px] h-[42px] py-2 mb-4 border bg-gray-100 rounded-xl placeholder-gray-400 outline-gray-300"
+            value={user.password}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
+          />
+        </div>
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input id="email" placeholder="enter email" value={user.email}
-        onChange={(e) => setUser({...user, email: e.target.value})} type="email" required />
+
+      
+      <div className="flex items-center justify-center mb-4">
+        <Button
+          type="submit"
+          className="w-[300px] h-[42px] flex justify-center items-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          disabled={isLoading}
+        >
+          {isLoading ? "Signing up..." : "Sign up"}
+        </Button>
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input id="password" type="password" value={user.password} 
-        onChange={(e) => setUser({...user, password: e.target.value})} required />
+
+
+      <div className="text-sm text-center">
+        Already have an account?{" "}
+        <Link
+          href="/login"
+          className="font-medium text-blue-600 hover:text-blue-700"
+        >
+          Log in
+        </Link>
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="role">Role</Label>
-        <Select onValueChange={(value)=>{
-            setUser({...user,role: value})
-        }} required>
-          <SelectTrigger>
-            <SelectValue placeholder="Select your role" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="customer">Customer</SelectItem>
-            <SelectItem value="seller">Seller</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <Button className="w-full" type="submit" disabled={isLoading}>
-        {isLoading ? "Signing up..." : "Sign up"}
-      </Button>
     </form>
   )
 }

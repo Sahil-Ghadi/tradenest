@@ -28,7 +28,7 @@ export default function LoginForm() {
             autoComplete="username"
             placeholder="Username"
             required
-            className=" w-[300px] mb-2 pl-4 py-2 border bg-gray-100 rounded-xl placeholder-gray-400  outline-gray-300"
+            className=" w-[300px] h-[42px] mb-2 pl-4 py-2 border bg-gray-100 rounded-xl placeholder-gray-400  outline-gray-300"
             value={user.username}
             onChange={(e) => setUser({ ...user, username: e.target.value })}
           />
@@ -42,7 +42,7 @@ export default function LoginForm() {
             autoComplete="current-password"
             placeholder="Password"
             required
-            className="pl-4 w-[300px] py-2 mb-4 border bg-gray-100 rounded-xl placeholder-gray-400 outline-gray-300"
+            className="pl-4 w-[300px] h-[42px] py-2 mb-4 border bg-gray-100 rounded-xl placeholder-gray-400 outline-gray-300"
             value={user.password}
             onChange={(e) => setUser({ ...user, password: e.target.value })}
           />
@@ -53,7 +53,7 @@ export default function LoginForm() {
       <div className="flex items-center justify-center mb-4">
         <button
           type="submit"
-          className="w-[300px] flex justify-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="w-[300px] h-[42px] flex justify-center items-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Sign in
         </button>
