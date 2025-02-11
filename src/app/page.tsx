@@ -1,8 +1,15 @@
-"use client"
 import axios from "axios";
 import { useState,useEffect } from "react";
+import ProductCard from "@/components/ProductCard"
 
 export default function Home() {
+
+  // interface itemSlot {
+  //   _id:string,
+  //   name:string,
+  //   price: number,
+  //   imageUrl:string,
+  // }
 
   const [items,setItems] = useState([])
 
@@ -21,15 +28,13 @@ export default function Home() {
   }, [items])
   
   return (
-    <><div className="max-h-screen bg-blue-500">
-       {items.map((item) => (
-        <div className="rounded-md bg-pink-200" key={item.itemName}>
-          <img src="" alt="" />
-          <p>{item.name}</p>
-          <p>{item.price}</p>
-        </div>
-       ))}
+    <main className="container mx-auto px-4 py-8">
+      <h1 className="mb-8 text-3xl font-bold">Featured Products</h1>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {items.map((item: any) => (
+          <ProductCard key={item._id} {...item} />
+        ))}
       </div>
-    </>
+    </main>
   )
 }

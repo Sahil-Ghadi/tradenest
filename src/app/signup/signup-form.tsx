@@ -16,12 +16,12 @@ export function SignUpForm() {
     role: ''
   })
 
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  const onSubmit = async () => {
     try {
         setIsLoading(true)
-        const res = axios.post('/api/auth/signup',user)
-        console.log("sent sign up data ");
+        console.log(user);
+        const res = await axios.post('/api/auth/signup',user)
+        console.log("sent sign up data ",res);
     } catch (error) {
         console.log("error in signing");
     }finally{
