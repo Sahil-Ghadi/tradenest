@@ -3,20 +3,38 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuthStore } from "@/store/authStore";
 
 export default function LoginForm() {
   const [user, setUser] = useState({
-    email:'',
-    password: ''
-  })
-  const [error, setError] = useState("")
-  const router = useRouter()
+    email: "",
+    password: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const { login } = useAuthStore();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    
-  }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const email = user.email;
+    const password = user.password;
+
+    if (!email || !password) {
+      setError(() => "Please fill out all fields");
+      return;
+    }
+
+    setIsLoading(() => true);
+    setError(() => "");
+
+    const loginResponse = await login(email.toString(), password.toString());
+    if (loginResponse.error) {
+      setError(() => loginResponse.error!.message);
+    }
+
+    setIsLoading(() => false);
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -30,7 +48,7 @@ export default function LoginForm() {
             required
             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             value={user.email}
-            onChange={(e) => setUser({...user,email:e.target.value})}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
           />
         </div>
 
@@ -49,7 +67,6 @@ export default function LoginForm() {
         </div>
       </div>
 
-      
       <div className="flex items-center justify-center mb-4">
         <button
           type="submit"

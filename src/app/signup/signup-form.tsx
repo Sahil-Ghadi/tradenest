@@ -2,12 +2,8 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-// import { Input } from "@/components/ui/input"
-// import { Label } from "@/components/ui/label"
 import Link from "next/link";
-
-//import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import axios from "axios"
+import { useAuthStore } from "@/store/authStore";
 
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -15,24 +11,47 @@ export function SignUpForm() {
     name:'',
     email: '',
     password: '',
-    role: ''
   })
+  const {login,createAccount} = useAuthStore()
+  const [error, setError] = useState("");
 
-  const onSubmit = async () => {
-    try {
-        setIsLoading(true)
-        console.log(user);
-        const res = await axios.post('/api/auth/signup',user)
-        console.log("sent sign up data ",res);
-    } catch (error) {
-        console.log("error in signing");
-    }finally{
-        setIsLoading(false)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const name = user.name
+    const email =  user.email
+    const password =  user.password
+
+    if (name || !email || !password) {
+        setError(() => "Please fill out all fields");
+        return;
     }
-  }
+
+    setIsLoading(() => true);
+    setError(() => "");
+
+    const response = await createAccount(
+        `${name}`,
+        email.toString(),
+        password.toString()
+    );
+
+    if (response.error) {
+        setError(() => response.error!.message);
+    } else {
+        const loginResponse = await login(email.toString(), password.toString());
+        if (loginResponse.error) {
+            setError(() => loginResponse.error!.message);
+        }
+    }
+
+    setIsLoading(() => false);
+};
+
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit}>
       <div className="flex flex-col items-center justify-center">
         <div className="w-[300px]">
           <input

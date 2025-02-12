@@ -29,6 +29,8 @@ interface AuthStore {
     error?: AppwriteException | null;
   }>;
   logout(): Promise<void>;
+
+  
 }
 
 export const useAuthStore = create<AuthStore>()(
