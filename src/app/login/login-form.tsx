@@ -45,8 +45,9 @@ export default function LoginForm() {
             name="email"
             type="email"
             autoComplete="email"
+            placeholder="Email"
             required
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="pl-4 w-[300px] h-[42px] py-2 mb-2 border bg-gray-100 rounded-xl placeholder-gray-400 outline-gray-300"
             value={user.email}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
           />

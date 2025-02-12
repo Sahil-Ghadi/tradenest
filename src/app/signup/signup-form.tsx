@@ -59,7 +59,7 @@ export function SignUpForm() {
             name="name"
             type="name"
             autoComplete="name"
-            placeholder="name"
+            placeholder="Name"
             required
             className=" w-[300px] h-[42px] mb-2 pl-4 py-2 border bg-gray-100 rounded-xl placeholder-gray-400  outline-gray-300"
             value={user.name}
