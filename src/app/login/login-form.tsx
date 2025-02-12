@@ -6,31 +6,31 @@ import Link from "next/link";
 
 export default function LoginForm() {
   const [user, setUser] = useState({
-    username: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
-  const router = useRouter();
+    email:'',
+    password: ''
+  })
+  const [error, setError] = useState("")
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-  };
+    e.preventDefault()
+    
+    
+  }
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col items-center justify-center">
         <div className="w-[300px]">
           <input
-            id="username"
-            name="username"
-            type="username"
-            autoComplete="username"
-            placeholder="Username"
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
             required
-            className=" w-[300px] h-[42px] mb-2 pl-4 py-2 border bg-gray-100 rounded-xl placeholder-gray-400  outline-gray-300"
-            value={user.username}
-            onChange={(e) => setUser({ ...user, username: e.target.value })}
+            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            value={user.email}
+            onChange={(e) => setUser({...user,email:e.target.value})}
           />
         </div>
 

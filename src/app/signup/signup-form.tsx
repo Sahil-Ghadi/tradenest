@@ -12,7 +12,7 @@ import axios from "axios"
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [user, setUser] = useState({
-    username:'',
+    name:'',
     email: '',
     password: '',
     role: ''
@@ -36,15 +36,15 @@ export function SignUpForm() {
       <div className="flex flex-col items-center justify-center">
         <div className="w-[300px]">
           <input
-            id="username"
-            name="username"
-            type="username"
-            autoComplete="username"
-            placeholder="Username"
+            id="name"
+            name="name"
+            type="name"
+            autoComplete="name"
+            placeholder="name"
             required
             className=" w-[300px] h-[42px] mb-2 pl-4 py-2 border bg-gray-100 rounded-xl placeholder-gray-400  outline-gray-300"
-            value={user.username}
-            onChange={(e) => setUser({ ...user, username: e.target.value })}
+            value={user.name}
+            onChange={(e) => setUser({ ...user, name: e.target.value })}
           />
         </div>
 
