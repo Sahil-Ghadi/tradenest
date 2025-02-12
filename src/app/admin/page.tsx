@@ -1,5 +1,6 @@
 import { RequestList } from "@/components/request-list";
 import type { Request } from "@/types/request";
+import axios from "axios";
 
 // This is a mock function. In a real app, you'd fetch this data from a database.
 async function getRequests(): Promise<Request[]> {
@@ -46,7 +47,8 @@ async function getRequests(): Promise<Request[]> {
 }
 
 export default async function AdminPage() {
-  const requests = await getRequests();
+ //const requests = await getRequests();
+  const requests:[Request] = await axios.get("/api/admin");
 
   return (
     <div className="container mx-auto py-10">

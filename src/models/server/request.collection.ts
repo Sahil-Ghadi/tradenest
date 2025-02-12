@@ -20,7 +20,7 @@ export default async function createRequestCollection(){
   await Promise.all([
     databases.createEnumAttribute(db, requestCollection, "status",["PENDING","APPROVE","REJECT"], true),
     databases.createStringAttribute(db, requestCollection, "itemId", 50, true),
-    databases.createStringAttribute(db, requestCollection, "buyerId", 50, true),
+    databases.createStringAttribute(db, requestCollection, "buyerName", 50, true),
     databases.createStringAttribute(db, requestCollection, "sellerId", 50, true, undefined, true),
   ]);
   console.log("request Attributes created")
