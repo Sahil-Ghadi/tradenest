@@ -4,9 +4,11 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
   const [user, setUser] = useState({
     name:'',
     email: '',
@@ -47,6 +49,7 @@ export function SignUpForm() {
     }
 
     setIsLoading(() => false);
+    router.push('/addItem')
 };
 
 

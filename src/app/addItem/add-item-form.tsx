@@ -11,6 +11,7 @@ export default function AddItemForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("");
   const {CreateItem} = useAdminStore()
+  const router = useRouter()
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -25,7 +26,12 @@ export default function AddItemForm() {
     setIsLoading(() => true);
     setError(() => "");
 
-  //  await CreateItem()
+    const res = await CreateItem(name.toString(),Number(price))
+    if (res.error) {
+      setError(() => res.error!.message);
+    } 
+    setIsLoading(() => false);
+    router.push('/item')
   }
 
   return (
@@ -38,10 +44,10 @@ export default function AddItemForm() {
         <Label htmlFor="price">Price</Label>
         <Input id="price" name="price" type="number" step="0.01" required />
       </div>
-      <div>
+      {/* <div>
         <Label htmlFor="image">Item Image</Label>
         <Input id="image" name="image" type="file" accept="image/*" required />
-      </div>
+      </div> */}
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Adding..." : "Add Item"}
       </Button>

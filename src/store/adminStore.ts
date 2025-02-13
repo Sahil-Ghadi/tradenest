@@ -5,6 +5,7 @@ import { useAuthStore } from "./authStore";
 import { AppwriteException, ID, Models, Query } from "appwrite";
 import { databases } from "@/models/client/config";
 import { db, itemsCollection, requestCollection } from "@/models/name";
+import { Item } from "@/types/item";
 
 interface AdminStore {
   user: Models.User<any> | null;
@@ -12,7 +13,8 @@ interface AdminStore {
   setHydrated(): void;
 
   GetItems(): Promise<{
-    success: boolean;
+    success:boolean,
+    data?:any,
     error?: AppwriteException | null;
   }>;
   Buyitem(
@@ -26,7 +28,6 @@ interface AdminStore {
   CreateItem(
     itemName: string,
     price: number,
-    seller: string
   ): Promise<{
     success: boolean;
     error?: AppwriteException | null;
@@ -57,12 +58,13 @@ export const useAdminStore = create<AdminStore>()(
           const items = await databases.listDocuments(db, itemsCollection, [
             Query.equal("status", "UNSOLD"),
           ]);
-          return { success: true, data: items.documents };
+          return { success: true, data: items };
         } catch (error) {
           console.log(error);
           return {
             success: false,
             error: error instanceof AppwriteException ? error : null,
+
           };
         }
       },

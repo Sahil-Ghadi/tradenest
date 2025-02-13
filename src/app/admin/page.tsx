@@ -1,3 +1,4 @@
+"use client"
 import { RequestList } from "@/components/request-list";
 import type { Request } from "@/types/request";
 import axios from "axios";
@@ -10,7 +11,8 @@ async function getRequests(): Promise<Request[]> {
   return [
     {
       id: "string",
-      name: "string",
+      Itemname: "string",
+      itemId:"12",
       buyerName: "string",
       sellerId: "string",
       status: "PENDING",
