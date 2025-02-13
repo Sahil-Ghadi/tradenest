@@ -12,7 +12,7 @@ interface AuthStore {
   hydrated: boolean;
 
   setHydrated(): void;
-  verfiySession(): Promise<void>;
+  verifySession(): Promise<void>;
   login(
     email: string,
     password: string
@@ -45,10 +45,11 @@ export const useAuthStore = create<AuthStore>()(
         set({ hydrated: true });
       },
 
-      async verfiySession() {
+      async verifySession() {
         try {
           const session = await account.getSession("current");
-          set({ session });
+          const user = await account.get();
+          set({ session, user });
         } catch (error) {
           console.log(error);
         }

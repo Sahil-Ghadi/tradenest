@@ -9,18 +9,19 @@ async function getRequests(): Promise<Request[]> {
 
   return [
     {
-      id: string,
-      name: string,
-      buyerName: string,
-      sellerId: string,
-      status: "PENDING" 
+      id: "string",
+      name: "string",
+      buyerName: "string",
+      sellerId: "string",
+      status: "PENDING",
+      price: 100,
     },
   ];
 }
 
 export default async function AdminPage() {
- //const requests = await getRequests();
-  const requests:[Request] = await axios.get("/api/admin");
+  //const requests = await getRequests();
+  const requests: [Request] = await axios.get("/api/admin");
 
   return (
     <div className="container mx-auto py-10">

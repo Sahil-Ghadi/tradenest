@@ -4,5 +4,6 @@ export interface Request {
   buyerName: string;
   sellerId: string;
   status: "PENDING" | "APPROVE" | "REJECT";
+  price:number;
   //createdAt: string;
 }

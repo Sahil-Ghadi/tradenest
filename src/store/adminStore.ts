@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
-
+import { useAuthStore } from "./authStore";
 import { AppwriteException, ID, Models, Query } from "appwrite";
 import { databases } from "@/models/client/config";
 import { db, itemsCollection, requestCollection } from "@/models/name";
@@ -38,9 +38,7 @@ interface AdminStore {
     success: boolean;
     error?: AppwriteException | null;
   }>;
-  ApproveReq(
-    reqId: string,
-  ): Promise<{
+  ApproveReq(reqId: string): Promise<{
     success: boolean;
     error?: AppwriteException | null;
   }>;
@@ -56,10 +54,10 @@ export const useAdminStore = create<AdminStore>()(
       },
       async GetItems() {
         try {
-          await databases.listDocuments(db, itemsCollection, [
+          const items = await databases.listDocuments(db, itemsCollection, [
             Query.equal("status", "UNSOLD"),
           ]);
-          return { success: true };
+          return { success: true, data: items.documents };
         } catch (error) {
           console.log(error);
           return {
@@ -79,6 +77,7 @@ export const useAdminStore = create<AdminStore>()(
             buyerName: username,
             sellerName: null,
             itemId: itemId,
+            price: price,
           });
           return { success: true };
         } catch (error) {
@@ -89,13 +88,14 @@ export const useAdminStore = create<AdminStore>()(
           };
         }
       },
-      async CreateItem(itemName: string, price: number, seller: string) {
+      async CreateItem(itemName: string, price: number) {
+        const { user } = useAuthStore.getState();
         try {
           await databases.createDocument(db, itemsCollection, ID.unique(), {
             name: itemName,
             price: price,
             buyerId: null,
-            sellerId: seller,
+            sellerId: user?.$id,
           });
           return { success: true };
         } catch (error: any) {
@@ -108,7 +108,7 @@ export const useAdminStore = create<AdminStore>()(
       },
       async ApproveReq(reqId: string) {
         try {
-          await databases.updateDocument(db, itemsCollection, reqId, {
+          await databases.updateDocument(db, requestCollection, reqId, {
             status: "APPROVE",
           });
           return { success: true };
@@ -120,9 +120,9 @@ export const useAdminStore = create<AdminStore>()(
           };
         }
       },
-      async RejectReq(reqId: string,itemId: string) {
+      async RejectReq(reqId: string, itemId: string) {
         try {
-          await databases.updateDocument(db, itemsCollection, reqId, {
+          await databases.updateDocument(db, requestCollection, reqId, {
             status: "REJECT",
           });
           await databases.updateDocument(db, itemsCollection, itemId, {

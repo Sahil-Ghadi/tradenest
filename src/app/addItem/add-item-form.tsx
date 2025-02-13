@@ -5,31 +5,27 @@ import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import axios from "axios"
+import { useAdminStore } from "@/store/adminStore"
 
 export default function AddItemForm() {
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("");
+  const {CreateItem} = useAdminStore()
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsLoading(true)
-
-    const formData = new FormData(event.currentTarget)
+    const formData = new FormData(e.currentTarget);
     console.log(formData);
-    try {
-      const response = await axios.post("/api/admin/add-item",formData)
-      if (response) {
-        console.log("item added");
-        
-      } else {
-        console.error("Failed to add item")
-      }
-    } catch (error) {
-      console.error("Error adding item:", error)
-    } finally {
-      setIsLoading(false)
+    const name = formData.get("name");
+    const price = formData.get("price");
+    if(!name || !price){
+     setError(() => "Please fill out all fields");
+     return;
     }
+    setIsLoading(() => true);
+    setError(() => "");
+
+  //  await CreateItem()
   }
 
   return (
