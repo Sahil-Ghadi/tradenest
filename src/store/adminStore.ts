@@ -118,9 +118,10 @@ export const useAdminStore = create<AdminStore>()(
         try {
           await databases.createDocument(db, itemsCollection, ID.unique(), {
             name: name,
-            price: price,
-            buyerId: null,
+            buyerName: "",
+            price: price.valueOf(),
             sellerId: user?.$id,
+            status:"UNSOLD"
           });
           return { success: true };
         } catch (error: any) {

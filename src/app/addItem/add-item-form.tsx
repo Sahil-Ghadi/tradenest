@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useAdminStore } from "@/store/adminStore"
+import { log } from "node:console"
 
 export default function AddItemForm() {
 
@@ -37,6 +38,8 @@ export default function AddItemForm() {
     setError(() => "");
 
     const res = await CreateItem(name.toString(),Number(price))
+    console.log(res);
+    
     if (res.error) {
       setError(() => res.error!.message);
     } 
