@@ -1,5 +1,5 @@
 export interface Request {
-  id: string;
+  $id: string;
   Itemname: string;
   itemId: string;
   buyerName: string;
