@@ -25,7 +25,8 @@ interface AdminStore {
   Buyitem(
     itemId: string,
     username: string,
-    price: number
+    price: number,
+    sellerId:string
   ): Promise<{
     success: boolean;
     error?: AppwriteException | null;
@@ -91,7 +92,7 @@ export const useAdminStore = create<AdminStore>()(
           };
         }
       },
-      async Buyitem(itemId: string, username: string, price: number) {
+      async Buyitem(itemId: string, username: string, price: number,sellerId:string) {
         try {
           await databases.updateDocument(db, itemsCollection, itemId, {
             status: "SOLD",
@@ -101,6 +102,7 @@ export const useAdminStore = create<AdminStore>()(
             status: "PENDING",
             buyerName: username,
             sellerName: null,
+            sellerId:sellerId,
             itemId: itemId,
             price: price,
           });
