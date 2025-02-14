@@ -17,6 +17,11 @@ interface AdminStore {
     data?:any,
     error?: AppwriteException | null;
   }>;
+  GetRequest(): Promise<{
+    success:boolean,
+    data?:any,
+    error?: AppwriteException | null;
+  }>;
   Buyitem(
     itemId: string,
     username: string,
@@ -26,7 +31,7 @@ interface AdminStore {
     error?: AppwriteException | null;
   }>;
   CreateItem(
-    itemName: string,
+    name: string,
     price: number,
   ): Promise<{
     success: boolean;
@@ -68,6 +73,24 @@ export const useAdminStore = create<AdminStore>()(
           };
         }
       },
+      async GetRequest() {
+        try {
+          const { user } = useAuthStore.getState();
+          if (!user) 
+            return { success: false};
+          const requests = await databases.listDocuments(db, requestCollection, [
+            Query.equal("sellerId", user.$id),
+          ]);
+          return { success: true, data: requests };
+        } catch (error) {
+          console.log(error);
+          return {
+            success: false,
+            error: error instanceof AppwriteException ? error : null,
+
+          };
+        }
+      },
       async Buyitem(itemId: string, username: string, price: number) {
         try {
           await databases.updateDocument(db, itemsCollection, itemId, {
@@ -90,11 +113,11 @@ export const useAdminStore = create<AdminStore>()(
           };
         }
       },
-      async CreateItem(itemName: string, price: number) {
+      async CreateItem(name: string, price: number) {
         const { user } = useAuthStore.getState();
         try {
           await databases.createDocument(db, itemsCollection, ID.unique(), {
-            name: itemName,
+            name: name,
             price: price,
             buyerId: null,
             sellerId: user?.$id,

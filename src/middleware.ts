@@ -10,17 +10,17 @@ export async function middleware(request: NextRequest) {
   await Promise.all([getOrCreateDB(), getOrCreateStorage()]);
 
   // Define protected routes
-  const protectedRoutes = ["/admin", "/item", "/add-item"];
+  // const protectedRoutes = ["/admin", "/item", "/add-item"];
 
-  // Check if the current path is a protected route
-  if (protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))) {
-    const authToken = request.cookies.get("authToken")?.value; // Replace with your actual auth method
+  // // Check if the current path is a protected route
+  // if (protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))) {
+  //   const authToken = request.cookies.get("authToken")?.value; // Replace with your actual auth method
 
-    if (!authToken) {
-      // Redirect to login if not authenticated
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-  }
+  //   if (!authToken) {
+  //     // Redirect to login if not authenticated
+  //     return NextResponse.redirect(new URL("/login", request.url));
+  //   }
+  // }
 
   return NextResponse.next();
 }

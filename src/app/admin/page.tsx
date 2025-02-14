@@ -1,34 +1,47 @@
-"use client"
+"use client";
+
+import { useEffect, useState } from "react";
 import { RequestList } from "@/components/request-list";
 import type { Request } from "@/types/request";
-import axios from "axios";
+import { useAdminStore } from "@/store/adminStore";
 
-// This is a mock function. In a real app, you'd fetch this data from a database.
-async function getRequests(): Promise<Request[]> {
-  // Simulate a delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+export default function AdminPage() {
+  const { GetRequest } = useAdminStore();
+  const [requests, setRequests] = useState<Request[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  return [
-    {
-      id: "string",
-      Itemname: "string",
-      itemId:"12",
-      buyerName: "string",
-      sellerId: "string",
-      status: "PENDING",
-      price: 100,
-    },
-  ];
-}
+  useEffect(() => {
+    async function fetchRequests() {
+      setLoading(true);
+      setError(null);
 
-export default async function AdminPage() {
-  //const requests = await getRequests();
-  const requests: [Request] = await axios.get("/api/admin");
+      const data = await GetRequest();
+
+      if (data.success) {
+        setRequests(Array.isArray(data.data.documents) ? data.data.documents : []);
+      } else {
+        setError(data.error?.message || "Failed to fetch requests");
+      }
+
+      setLoading(false);
+    }
+    fetchRequests();
+  }, [GetRequest]);
 
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard - Requests</h1>
-      <RequestList requests={requests} />
+
+      {loading ? (
+        <p className="text-center text-gray-500">Loading requests...</p>
+      ) : error ? (
+        <p className="text-center text-red-500">{error}</p>
+      ) : requests.length > 0 ? (
+        <RequestList requests={requests} />
+      ) : (
+        <p className="text-center text-gray-500">No requests found.</p>
+      )}
     </div>
   );
 }

@@ -1,21 +1,15 @@
+'use client'
 import Image from "next/image"
 import { ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Item } from "@/types/item"
 
-interface ProductCardProps {
-  _id: string
-  name: string
-  price: number
-  description: string
-  imageUrl: string
-}
-
-export default function ProductCard({ _id, name, price, description, imageUrl }: ProductCardProps) {
+export default function ProductCard({ $id, name, price, sellerId, }: Item) {
   return (
     <div className="group relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition-all hover:shadow-lg">
       <div className="aspect-square overflow-hidden">
         <Image
-          src={imageUrl || "/placeholder.svg"}
+          src={ "/placeholder.svg"}
           alt={name}
           width={300}
           height={300}
@@ -24,9 +18,9 @@ export default function ProductCard({ _id, name, price, description, imageUrl }:
       </div>
       <div className="p-4">
         <h3 className="mb-2 text-lg font-semibold text-gray-900">{name}</h3>
-        <p className="mb-2 text-sm text-gray-500 line-clamp-2">{description}</p>
+        <p className="mb-2 text-sm text-gray-500 line-clamp-2">{sellerId}</p>
         <div className="flex items-center justify-between">
-          <span className="text-xl font-bold text-gray-900">${price.toFixed(2)}</span>
+          <span className="text-xl font-bold text-gray-900">Rs.{price}</span>
           <Button size="sm">
             <ShoppingCart className="mr-2 h-4 w-4" />
             Add to Cart

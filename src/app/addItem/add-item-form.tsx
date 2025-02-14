@@ -8,17 +8,27 @@ import { Button } from "@/components/ui/button"
 import { useAdminStore } from "@/store/adminStore"
 
 export default function AddItemForm() {
+
+  interface itemData {
+    name:string,
+    price:string
+  }
+
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("");
   const {CreateItem} = useAdminStore()
+  const [data,setData] = useState<itemData>({
+    name: "",
+    price: ""
+  })
   const router = useRouter()
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
-    console.log(formData);
-    const name = formData.get("name");
-    const price = formData.get("price");
+    const name = data.name
+    const price = data.price
+    console.log(data);
+    
     if(!name || !price){
      setError(() => "Please fill out all fields");
      return;
@@ -38,11 +48,15 @@ export default function AddItemForm() {
     <form onSubmit={onSubmit} className="space-y-6">
       <div>
         <Label htmlFor="name">Item Name</Label>
-        <Input id="name" name="name" required />
+        <Input id="name" name="name" required
+        value={data.name}
+        onChange={(e) => setData({ ...data, name: e.target.value })} />
       </div>
       <div>
         <Label htmlFor="price">Price</Label>
-        <Input id="price" name="price" type="number" step="0.01" required />
+        <Input id="price" name="price" type="number" step="0.01" required 
+        value={data.price}
+        onChange={(e) => setData({ ...data, price: e.target.value })}/>
       </div>
       {/* <div>
         <Label htmlFor="image">Item Image</Label>

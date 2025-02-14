@@ -21,35 +21,32 @@ export function SignUpForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const name = user.name
-    const email =  user.email
-    const password =  user.password
+    const { name, email, password } = user;
 
-    if (name || !email || !password) {
-        setError(() => "Please fill out all fields");
+    if (!name || !email || !password) {
+        setError("Please fill out all fields");
         return;
     }
 
-    setIsLoading(() => true);
-    setError(() => "");
+    setIsLoading(true);
+    setError("");
 
-    const response = await createAccount(
-        `${name}`,
-        email.toString(),
-        password.toString()
-    );
+    const response = await createAccount(name, email, password);
 
     if (response.error) {
-        setError(() => response.error!.message);
-    } else {
-        const loginResponse = await login(email.toString(), password.toString());
-        if (loginResponse.error) {
-            setError(() => loginResponse.error!.message);
-        }
+        setError(response.error.message);
+        setIsLoading(false);
+        return;
     }
 
-    setIsLoading(() => false);
-    router.push('/addItem')
+    const loginResponse = await login(email, password);
+    if (loginResponse.error) {
+        setError(loginResponse.error.message);
+        setIsLoading(false);
+        return;
+    }
+
+    router.push("/addItem");
 };
 
 
