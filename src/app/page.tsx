@@ -1,41 +1,42 @@
 "use client";
-import { useState, useEffect } from "react";
-import ProductCard from "@/components/ProductCard";
-import { useAdminStore } from "@/store/adminStore";
-import { Item } from "@/types/item";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
-  const { GetItems } = useAdminStore();
-  const [items, setItems] = useState<Item[]>([]);
-
-  const fetchItems = async () => {
-    try {
-      const data = await GetItems();
-      console.log("Fetched Data:", data.data.documents); // Debugging
-      console.log("Data Type:", typeof data.data.documents);
-      console.log("Is Array?", Array.isArray(data.data.documents));
-
-      setItems(Array.isArray(data.data.documents) ? data.data.documents : []);
-    } catch (error) {
-      console.error("Error fetching items:", error);
-      setItems([]);
-    }
-  };
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
+const Dashboard = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 text-3xl font-bold">Featured Products</h1>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {items.length > 0 ? (
-          items.map((item: Item) => <div key={item.$id} ><ProductCard {...item} /></div>)
-        ) : (
-          <p>No products available.</p>
-        )}
+    <div className="h-screen">
+      <div className="flex h-full">
+        {/* Admin Side */}
+        <div className="w-1/2 bg-gray-100 p-6 border-r border-gray-300">
+          <h2 className="text-2xl font-bold mb-4">Admin Panel</h2>
+          <div className="space-y-4">
+          <p className="text-lg">Welcome, Store Admin!</p>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              onClick={() => router.push("/admin")}
+            >
+              View Item Requests
+            </button>
+          </div>
+        </div>
+
+        {/* Customer Side */}
+        <div className="w-1/2 bg-white p-6">
+          <h2 className="text-2xl font-bold mb-4">Customer Panel</h2>
+          <div className="space-y-4">
+            <p className="text-lg">Welcome, Customer!</p>
+            <button onClick={() => router.push("/item")}
+            className="bg-green-500 text-white px-4 py-2 rounded-lg">
+              View Available Items
+            </button>
+          </div>
+        </div>
       </div>
-    </main>
+    </div>
   );
-}
+};
+
+export default Dashboard;

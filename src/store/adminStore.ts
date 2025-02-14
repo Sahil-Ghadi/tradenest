@@ -17,6 +17,11 @@ interface AdminStore {
     data?:any,
     error?: AppwriteException | null;
   }>;
+  GetMyOrders(): Promise<{
+    success:boolean,
+    data?:any,
+    error?: AppwriteException | null;
+  }>;
   GetRequest(): Promise<{
     success:boolean,
     data?:any,
@@ -30,8 +35,10 @@ interface AdminStore {
     error?: AppwriteException | null;
   }>;
   CreateReq(
+    Itemname: string,
     itemId: string,
-    sellerId:string
+    sellerName:string,
+    price:number
   ): Promise<{
     success: boolean;
     error?: AppwriteException | null;
@@ -77,6 +84,23 @@ export const useAdminStore = create<AdminStore>()(
           };
         }
       },
+      async GetMyOrders() {
+        try {
+          const { user } = useAuthStore.getState();
+          if (!user) return { success: false };
+
+          const req = await databases.listDocuments(db, requestCollection, [
+            Query.equal("buyerName", user.name),
+          ]);
+          return { success: true, data: req };
+        } catch (error) {
+          console.log("Error in GetItems:", error);
+          return {
+            success: false,
+            error: error instanceof AppwriteException ? error : null,
+          };
+        }
+      },
 
       async GetRequest() {
         try {
@@ -84,7 +108,7 @@ export const useAdminStore = create<AdminStore>()(
           if (!user) return { success: false };
 
           const requests = await databases.listDocuments(db, requestCollection, [
-            Query.equal("sellerId", user.$id),
+            Query.equal("sellerName", user.name),
           ]);
           return { success: true, data: requests };
         } catch (error) {
@@ -114,7 +138,7 @@ export const useAdminStore = create<AdminStore>()(
         }
       },
 
-      async CreateReq(itemId: string, sellerId: string) {
+      async CreateReq(Itemname: string,itemId: string, sellerName: string,price:number) {
         try {
           const { user } = useAuthStore.getState();
           if (!user) return { success: false };
@@ -122,8 +146,10 @@ export const useAdminStore = create<AdminStore>()(
           await databases.createDocument(db, requestCollection, ID.unique(), {
             status: "PENDING",
             buyerName: user.name,
-            sellerId, 
+            sellerName, 
+            Itemname,
             itemId,
+            price
           });
           return { success: true };
         } catch (error) {
@@ -144,7 +170,7 @@ export const useAdminStore = create<AdminStore>()(
             name,
             buyerName: "",
             price,
-            sellerId: user.$id,
+            sellerName: user.name,
             status: "UNSOLD",
           });
           return { success: true };

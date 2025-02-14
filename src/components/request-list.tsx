@@ -36,7 +36,7 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
 
       console.log("Approved successfully");
     } catch (error: any) {
-      console.error(error.message);
+      console.log(error.message);
     } finally {
       setPendingAction(null);
     }
@@ -69,21 +69,21 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
   {requests.map((request, index) => (
     <Card key={request.$id || `fallback-key-${index}`}>
       <CardHeader>
-        <CardTitle>{request.Itemname}</CardTitle>
+        <CardTitle className="text-2xl">{request.Itemname}</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground">Buyer: {request.buyerName}</p>
         <p className="text-sm text-muted-foreground">Status: {request.status}</p>
-        {/* <p className="text-sm text-muted-foreground">Price: ${request.price}</p> */}
+        <p className="text-sm text-muted-foreground">Price: Rs. {request.price}</p>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button
+        <Button className="bg-green-300"
           onClick={() => handleApprove(request.$id,request.itemId,request.buyerName)}
           disabled={request.status !== "PENDING" || (pendingAction?.id === request.$id && pendingAction.type === "approve")}
         >
           {pendingAction?.id === request.$id && pendingAction.type === "approve" ? "Processing..." : "Approve"}
         </Button>
-        <Button
+        <Button className="bg-red-300"
           onClick={() => handleReject(request.$id, request.itemId)}
           disabled={request.status !== "PENDING" || (pendingAction?.id === request.$id && pendingAction.type === "reject")}
           variant="destructive"

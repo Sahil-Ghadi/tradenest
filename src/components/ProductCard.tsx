@@ -8,7 +8,7 @@ import { useAdminStore } from "@/store/adminStore"
 import { useAuthStore } from "@/store/authStore"
 import { useRouter } from "next/navigation"
 
-export default function ProductCard({ $id, name, price, sellerId }: Item) {
+export default function ProductCard({ $id, name, price, sellerName }: Item) {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState("")
     
@@ -16,7 +16,7 @@ export default function ProductCard({ $id, name, price, sellerId }: Item) {
     const { user } = useAuthStore()  // Ensure user is logged in
     const router = useRouter()
 
-    const buyItem = async (id: string, price: number, sellerId: string) => {
+    const buyItem = async (Itemname:string,id: string, price: number, sellerName: string) => {
         if (!id) {
             console.log("Product not found")
             return
@@ -25,7 +25,6 @@ export default function ProductCard({ $id, name, price, sellerId }: Item) {
             setError("You must be logged in to buy items")
             return
         }
-
         setIsLoading(true)
         setError("")
 
@@ -39,7 +38,7 @@ export default function ProductCard({ $id, name, price, sellerId }: Item) {
             console.log("Purchase success:", res)
 
             // Create request only if the purchase was successful
-            const reqs = await CreateReq(id, sellerId.toString())
+            const reqs = await CreateReq(Itemname,id, sellerName.toString(),price)
             if (reqs.error) {
                 setError(reqs.error.message)
                 return
@@ -69,11 +68,11 @@ export default function ProductCard({ $id, name, price, sellerId }: Item) {
             </div>
             <div className="p-4">
                 <h3 className="mb-2 text-lg font-semibold text-gray-900">{name}</h3>
-                <p className="mb-2 text-sm text-gray-500 line-clamp-2">{sellerId}</p>
+                <p className="mb-2 text-sm text-gray-500 line-clamp-2">{sellerName}</p>
                 <div className="flex items-center justify-between">
                     <span className="text-xl font-bold text-gray-900">Rs.{price}</span>
                     
-                    <Button size="sm" disabled={isLoading} onClick={() => buyItem($id, Number(price), sellerId)}>
+                    <Button size="sm" disabled={isLoading} onClick={() => buyItem(name,$id, Number(price), sellerName)}>
                         <ShoppingCart className="mr-2 h-4 w-4" />
                         {isLoading ? "Processing..." : "BUY"}
                     </Button>
