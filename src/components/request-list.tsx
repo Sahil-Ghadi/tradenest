@@ -18,14 +18,22 @@ interface RequestListProps {
 export function RequestList({ requests: initialRequests }: RequestListProps) {
   const { ApproveReq, RejectReq } = useAdminStore();
   const [requests, setRequests] = useState<Request[]>(initialRequests);
-  const [pendingAction, setPendingAction] = useState<{ id: string; type: "approve" | "reject" } | null>(null);
+  const [pendingAction, setPendingAction] = useState<{
+    id: string;
+    type: "approve" | "reject";
+  } | null>(null);
 
-  const handleApprove = async (id: string, itemId: string,buyerName:string) => {
+  const handleApprove = async (
+    id: string,
+    itemId: string,
+    buyerName: string
+  ) => {
     try {
       setPendingAction({ id, type: "approve" });
 
-      const res = await ApproveReq(id,itemId,buyerName);
-      if (!res.success) throw new Error(res.error?.message || "Approval failed");
+      const res = await ApproveReq(id, itemId, buyerName);
+      if (!res.success)
+        throw new Error(res.error?.message || "Approval failed");
 
       // ✅ Update UI after successful approval
       setRequests((prevRequests) =>
@@ -47,7 +55,8 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
       setPendingAction({ id, type: "reject" });
 
       const res = await RejectReq(id, itemId);
-      if (!res.success) throw new Error(res.error?.message || "Rejection failed");
+      if (!res.success)
+        throw new Error(res.error?.message || "Rejection failed");
 
       // ✅ Update UI after successful rejection
       setRequests((prevRequests) =>
@@ -58,42 +67,73 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
       console.log("Rejected successfully");
     } catch (error: any) {
       console.log("reject success");
-
     } finally {
       setPendingAction(null);
     }
   };
 
   return (
-<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-  {requests.map((request, index) => (
-    <Card key={request.$id || `fallback-key-${index}`}>
-      <CardHeader>
-        <CardTitle className="text-2xl">{request.Itemname}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">Buyer: {request.buyerName}</p>
-        <p className="text-sm text-muted-foreground">Status: {request.status}</p>
-        <p className="text-sm text-muted-foreground">Price: Rs. {request.price}</p>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button className="bg-green-300"
-          onClick={() => handleApprove(request.$id,request.itemId,request.buyerName)}
-          disabled={request.status !== "PENDING" || (pendingAction?.id === request.$id && pendingAction.type === "approve")}
-        >
-          {pendingAction?.id === request.$id && pendingAction.type === "approve" ? "Processing..." : "Approve"}
-        </Button>
-        <Button className="bg-red-300"
-          onClick={() => handleReject(request.$id, request.itemId)}
-          disabled={request.status !== "PENDING" || (pendingAction?.id === request.$id && pendingAction.type === "reject")}
-          variant="destructive"
-        >
-          {pendingAction?.id === request.$id && pendingAction.type === "reject" ? "Processing..." : "Reject"}
-        </Button>
-      </CardFooter>
-    </Card>
-  ))}
-</div>
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {requests.map((request, index) => (
+        <Card key={request.$id || `fallback-key-${index}`}>
+          <CardHeader className="px-6 pt-6 pb-3">
+            <CardTitle className="text-3xl font-semibold capitalize">
+              {request.Itemname}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-md text-muted-foreground">
+              Buyer: {request.buyerName}
+            </p>
+            <p className="text-md text-muted-foreground">
+              Status: {request.status}
+            </p>
+            <p className="text-md text-muted-foreground">
+              Price: Rs. {request.price}
+            </p>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button
+              className="bg-green-500 w-1/2 mx-2 group relative hover:bg-green-600 active:scale-95"
+              onClick={() =>
+                handleApprove(request.$id, request.itemId, request.buyerName)
+              }
+              disabled={
+                request.status !== "PENDING" ||
+                (pendingAction?.id === request.$id &&
+                  pendingAction.type === "approve")
+              }
+            >
+              <span className="group-hover:hidden">
+                {pendingAction?.id === request.$id &&
+                pendingAction.type === "approve"
+                  ? "Processing..."
+                  : "Approve"}
+              </span>
+              <span className="hidden group-hover:inline">&#10004;</span>
+            </Button>
 
+            <Button
+              className="bg-red-600 w-1/2 mx-2 group relative hover:bg-red-700 active:scale-95"
+              onClick={() => handleReject(request.$id, request.itemId)}
+              disabled={
+                request.status !== "PENDING" ||
+                (pendingAction?.id === request.$id &&
+                  pendingAction.type === "reject")
+              }
+              variant="destructive"
+              >
+              <span className="group-hover:hidden">
+              {pendingAction?.id === request.$id &&
+              pendingAction.type === "reject"
+                ? "Processing..."
+                : "Reject"}
+                </span>
+                <span className="hidden group-hover:inline">&#10008;</span>
+            </Button>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
   );
 }

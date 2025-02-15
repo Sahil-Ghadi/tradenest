@@ -124,10 +124,25 @@ export const useAdminStore = create<AdminStore>()(
         try {
           const { user } = useAuthStore.getState();
           if (!user) return { success: false };
-
+      
+          // Fetch item details to get sellerName and price
+          const item = await databases.getDocument(db, itemsCollection, itemId);
+          if (!item) return { success: false };
+      
           await databases.updateDocument(db, itemsCollection, itemId, {
             buyerName: user.name,
           });
+      
+          // Create a request in requestCollection
+          await databases.createDocument(db, requestCollection, ID.unique(), {
+            status: "PENDING",
+            buyerName: user.name,
+            sellerName: item.sellerName,
+            Itemname: item.name,
+            itemId: item.$id,
+            price: item.price,
+          });
+      
           return { success: true };
         } catch (error) {
           console.log("Error in BuyItem:", error);
@@ -137,6 +152,7 @@ export const useAdminStore = create<AdminStore>()(
           };
         }
       },
+      
 
       async CreateReq(Itemname: string,itemId: string, sellerName: string,price:number) {
         try {

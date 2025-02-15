@@ -32,7 +32,7 @@ export default function AdminPage() {
   return (
     <div className="mx-4 sm:mx-10">
       <div className="bg-gray-200 rounded-3xl mt-6 sm:mt-10 h-auto min-h-[535px] flex flex-col border-4 border-dashed border-gray-400 p-4 sm:p-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-center mt-4 sm:mt-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center mb-3 sm:mb-5">
           Admin Dashboard - Requests
         </h1>
   

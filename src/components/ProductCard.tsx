@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import Image from "next/image"
 import { ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -8,13 +8,36 @@ import { useAdminStore } from "@/store/adminStore"
 import { useAuthStore } from "@/store/authStore"
 import { useRouter } from "next/navigation"
 
-export default function ProductCard({ $id, name, price, }: Item) {
+export default function ProductCard({ $id, name, price }: Item) {
+  const { Buyitem } = useAdminStore()
+  const { user } = useAuthStore()
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  const handleBuyItem = async () => {
+    if (!user) {
+      alert("Please log in to purchase an item.")
+      return
+    }
+
+    setLoading(true)
+    const response = await Buyitem($id)
+
+    if (response.success) {
+      alert("Item purchase request sent successfully!")
+      router.refresh() // Refresh the page after purchase
+    } else {
+      alert("Failed to purchase item. Please try again.")
+    }
+
+    setLoading(false)
+  }
+
   return (
     <div className="group relative w-full max-w-sm overflow-hidden rounded-2xl border border-gray-300 bg-gradient-to-br from-white to-gray-100 shadow-lg transition-all hover:shadow-xl">
-    
       <div className="aspect-square w-full overflow-hidden rounded-t-2xl">
         <Image
-          src={ "/Cool-bg.jpg"}
+          src={"/Cool-bg.jpg"}
           alt={name}
           width={400}
           height={300}
@@ -22,16 +45,21 @@ export default function ProductCard({ $id, name, price, }: Item) {
         />
       </div>
       <div className="p-5 space-y-3">
-      <h3 className="ml-1 text-2xl font-bold text-gray-700 capitalize tracking-wide">{name}</h3>
-      <div className="flex justify-between items-center">
-      <span className="text-3xl font-bold text-black ">&#8377;{price}/-</span>
-          <Button className="flex items-center gap-2 rounded-lg bg-gradient-to-r hover:bg-gradient-to-l active:bg-gradient-to-l from-green-400 to-teal-600 px-5 py-6 text-sm font-semibold text-white shadow-md active:to-teal-600 active:from-green-400 hover:to-teal-600 hover:from-green-400 active:scale-95 transition">
+        <h3 className="ml-1 text-2xl font-bold text-gray-700 capitalize tracking-wide">{name}</h3>
+        <div className="flex justify-between items-center">
+          <span className="text-3xl font-bold text-black">&#8377;{price}/-</span>
+          <Button
+            className="flex items-center gap-2 rounded-lg bg-gradient-to-r hover:bg-gradient-to-l active:bg-gradient-to-l from-green-400 to-teal-600 px-5 py-6 text-sm font-semibold text-white shadow-md active:to-teal-600 active:from-green-400 hover:to-teal-600 hover:from-green-400 active:scale-95 transition"
+            onClick={handleBuyItem}
+            disabled={loading}
+          >
             <ShoppingCart className="h-4 w-4" />
-            Add to Cart
+            {loading ? "Processing..." : "Add to Cart"}
           </Button>
-          </div>
         </div>
       </div>
+    </div>
   )
 }
+
 
