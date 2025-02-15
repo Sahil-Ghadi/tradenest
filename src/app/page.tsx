@@ -36,8 +36,7 @@ export default function Home() {
           <p>No products available.</p>
         )}
       </div>
-    </div>
+      </main>
   );
 };
 
-export default Dashboard;
