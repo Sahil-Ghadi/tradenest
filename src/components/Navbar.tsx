@@ -28,7 +28,7 @@ const Navbar = () => {
 
       {/* Desktop Navigation (Before Login) */}
       {!user && (
-        <ul className="hidden md:flex space-x-3">
+        <ul className="flex md:flex space-x-3">
           {navItems.map(
             (item) =>
               item.active && (
@@ -45,7 +45,6 @@ const Navbar = () => {
         </ul>
       )}
 
-      {/* Desktop Navigation (After Login) */}
       {user && (
         <ul className="hidden md:flex space-x-3">
           {navItems.map(
