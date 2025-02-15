@@ -13,6 +13,7 @@ export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const { login } = useAuthStore();
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,6 +35,7 @@ export default function LoginForm() {
     }
 
     setIsLoading(() => false);
+    router.push('/item')
   };
 
   return (

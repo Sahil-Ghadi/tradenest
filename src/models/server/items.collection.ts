@@ -18,7 +18,7 @@ export default async function createItemCollection() {
     databases.createStringAttribute(db, itemsCollection, "name", 50, true),
     databases.createStringAttribute(db, itemsCollection, "sellerId", 50, true),
     databases.createStringAttribute(db, itemsCollection, "buyerName", 50, true),
-    databases.createAttribute(db, itemsCollection, "price", 50, true),
+    databases.createIntegerAttribute(db, itemsCollection, "price",true),
     databases.createEnumAttribute(db,itemsCollection,"status",["SOLD", "UNSOLD"],true),
   ]);
   console.log("item Attributes Created");

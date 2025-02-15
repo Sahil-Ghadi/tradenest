@@ -7,29 +7,34 @@ const Dashboard = () => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center w-full p-6">
-      <div className="flex flex-col sm:flex-row w-full gap-6">
-       
-        <div className="flex flex-col justify-center items-center sm:items-center h-1/2 w-full sm:w-3/4 bg-slate-700 p-6 rounded-2xl border border-gray-400 shadow-md">
-          <h2 className="text-3xl font-bold text-white mb-4">Admin Panel</h2>
-          <button
-            className="w-full sm:w-auto bg-blue-500 text-white px-6 py-3 rounded-lg transition hover:bg-blue-600 active:scale-95"
-            onClick={() => router.push("/admin")}
-          >
-            View Item Requests
-          </button>
+    <div className="h-screen">
+      <div className="flex h-full">
+        {/* Admin Side */}
+        <div className="w-1/2 bg-gray-100 p-6 border-r border-gray-300">
+          <h2 className="text-2xl font-bold mb-4">Admin Panel</h2>
+          <div className="space-y-4">
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              onClick={() => router.push("/admin")}
+            >
+              View Item Requests
+            </button>
+          </div>
         </div>
 
         {/* Customer Side */}
-        <div className="flex flex-col items-center sm:items-center w-full sm:w-3/4 h-1/2 bg-slate-700 p-6 rounded-2xl border border-gray-400 shadow-md">
-          <h2 className="text-3xl font-bold text-white mb-4">Customer Panel</h2>
-          <button className="w-full sm:w-[198px] bg-green-500 text-white px-6 py-3 rounded-lg transition hover:bg-green-600 active:scale-95">
-            View Orders
-          </button>
+        <div className="w-1/2 bg-white p-6">
+          <h2 className="text-2xl font-bold mb-4">Customer Panel</h2>
+          <div className="space-y-4">
+            <p className="text-lg">Welcome, Customer!</p>
+            <button className="bg-green-500 text-white px-4 py-2 rounded-lg">
+              View Orders
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Dashboard;
