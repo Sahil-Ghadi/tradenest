@@ -10,7 +10,7 @@ export default {
   theme: {
   	extend: {
 		backgroundImage: {
-			'cool': "url('/Cool-bg.jpg')"
+			'cool': "url('/Cool-bg.jpg')",
 		},
   		colors: {
   			background: 'hsl(var(--background))',

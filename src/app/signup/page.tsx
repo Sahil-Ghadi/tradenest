@@ -4,9 +4,9 @@ import { SignUpForm } from "./signup-form"
 
 export default function SignUpPage() {
   return (
-    <div className="bg-cool bg-cover bg-no-repeat h-full ">
-          <div className="h-screen flex flex-col justify-center items-center">
-            <div className="h-[415px] w-[380px] rounded-xl shadow-2xl bg-white flex flex-col sm:w-[410px]">
+    <div className="z-0">
+          <div className="h-[616px] flex flex-col justify-center items-center">
+            <div className="h-[415px] w-[380px] rounded-xl  border-4 border-black border-dotted mb-8 bg-white flex flex-col sm:w-[410px]">
               <div className=" flex items-center">
                 <img className="h-10 w-auto mr-4"></img>
                 <img className="h-10 w-auto"></img>
