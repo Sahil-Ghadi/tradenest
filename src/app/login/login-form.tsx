@@ -35,7 +35,7 @@ export default function LoginForm() {
     }
 
     setIsLoading(() => false);
-    router.push('/item')
+    router.push('/')
   };
 
   return (

@@ -12,7 +12,7 @@ const Navbar = () => {
     { name: "Login", slug: "/login", active: !user },
     { name: "Signup", slug: "/signup", active: !user },
     { name: "Add Items", slug: "/addItem", active: user },
-    { name: "My Orders", slug: "/", active: user },
+    { name: "My Orders", slug: "/myOrders", active: user },
     { name: "My Request", slug: "/admin", active: user },
     { name: "My Profile", slug: "/dashboard", active: user },
   ];
