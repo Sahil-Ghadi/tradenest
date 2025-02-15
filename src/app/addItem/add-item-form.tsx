@@ -69,8 +69,9 @@ export default function AddItemForm() {
         <Label htmlFor="image">Item Image</Label>
         <Input id="image" name="image" type="file" accept="image/*" required />
       </div> */}
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? "Adding..." : "Add Item"}
+      <Button 
+      className="w-[250px] mt-8 rounded-full"
+      type="submit" disabled={isLoading}>Add Item
       </Button>
     </form>
   )
