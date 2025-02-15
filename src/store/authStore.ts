@@ -1,36 +1,19 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
-
-import { AppwriteException, ID, Models } from "appwrite";
-import { account } from "@/models/client/config";
+import {  Models } from "appwrite";
+import { verifySession, login, createAccount, logout } from "@/lib/authService";
 
 interface AuthStore {
   session: Models.Session | null;
   jwt: string | null;
   user: Models.User<any> | null;
   hydrated: boolean;
-
   setHydrated(): void;
-  verfiySession(): Promise<void>;
-  login(
-    email: string,
-    password: string
-  ): Promise<{
-    success: boolean;
-    error?: AppwriteException | null;
-  }>;
-  createAccount(
-    name: string,
-    email: string,
-    password: string
-  ): Promise<{
-    success: boolean;
-    error?: AppwriteException | null;
-  }>;
+  verifySession(): Promise<void>;
+  login(email: string, password: string): Promise<any>;
+  createAccount(name: string, email: string, password: string): Promise<any>;
   logout(): Promise<void>;
-
-  
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -45,66 +28,34 @@ export const useAuthStore = create<AuthStore>()(
         set({ hydrated: true });
       },
 
-      async verfiySession() {
-        try {
-          const session = await account.getSession("current");
-          set({ session });
-        } catch (error) {
-          console.log(error);
+      async verifySession() {
+        const res = await verifySession();
+        if (res.success) {
+          set({ session: res.session, user: res.user });
         }
       },
 
       async login(email: string, password: string) {
-        try {
-          const session = await account.createEmailPasswordSession(
-            email,
-            password
-          );
-          const [user, { jwt }] = await Promise.all([
-            account.get(),
-            account.createJWT(),
-          ]);
-
-          set({ session, user, jwt });
-
-          return { success: true };
-        } catch (error) {
-          console.log(error);
-          return {
-            success: false,
-            error: error instanceof AppwriteException ? error : null,
-          };
+        const res = await login(email, password);        
+        if (res.success) {
+          set({ session: res.session, user: res.user, jwt: res.jwt });
         }
+        return res;
       },
 
       async createAccount(name: string, email: string, password: string) {
-        try {
-          await account.create(ID.unique(), email, password, name);
-          return { success: true };
-        } catch (error) {
-          console.log(error);
-          return {
-            success: false,
-            error: error instanceof AppwriteException ? error : null,
-          };
-        }
+        return await createAccount(name, email, password);
       },
 
       async logout() {
-        try {
-          await account.deleteSessions();
-          set({ session: null, jwt: null, user: null });
-        } catch (error) {
-          console.log(error);
-        }
+        await logout();
+        set({ session: null, jwt: null, user: null });
       },
     })),
     {
       name: "auth",
-      onRehydrateStorage() {
-        return (state, error) => {
-          if (!error) state?.setHydrated();
-        };
+      onRehydrateStorage: () => (state, error) => {
+        if (!error && state) state.setHydrated();
       },
     }
   )

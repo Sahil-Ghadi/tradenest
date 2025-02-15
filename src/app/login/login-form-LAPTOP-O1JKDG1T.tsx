@@ -1,82 +1,58 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/navigation";
-import axios from 'axios'
+import axios from "axios";
 
-export function SignUpForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+export default function LoginForm() {
   const [user, setUser] = useState({
-    name:'',
-    email: '',
-    password: '',
-  })
-  const {login,createAccount} = useAuthStore()
+    email: "",
+    password: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const { login } = useAuthStore();
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { name, email, password } = user;
+    const email = user.email;
+    const password = user.password;
 
-    if (!name || !email || !password) {
-        setError("Please fill out all fields");
-        return;
+    if (!email || !password) {
+      setError(() => "Please fill out all fields");
+      return;
     }
 
-    setIsLoading(true);
-    setError("");
+    setIsLoading(() => true);
+    setError(() => "");
 
     try {
-      // Sign up request
-      const data = await axios.post("api/auth/signup", { name, email, password });
+      const  data  = await axios.post("/api/auth/login", user);
 
-      if (!data.data.success) {
-        setError(data.data.message);
-        setIsLoading(false);
-        return;
+      if (data.data.success) {
+        // Store session in Zustand
+        await login(email, password);
+        console.log("updated user in zus");
+        
+        router.push("/item");
+      } else {
+        setError(data.data.message || "Failed to log in");
       }
-
-      // Automatically log in after sign-up
-      const loginRes = await login(email, password);
-      if (loginRes.error) {
-        setError(loginRes.error.message);
-        setIsLoading(false);
-        return;
-      }
-
-      router.push("/");
     } catch (err: any) {
-      setError(err.response?.data?.error || "Something went wrong. Please try again.");
+      setError(err.response?.data?.error || "Something went wrong");
     } finally {
       setIsLoading(false);
     }
-};
-
+  };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col items-center justify-center">
         <div className="w-[300px]">
-          <input
-            id="name"
-            name="name"
-            type="name"
-            autoComplete="name"
-            placeholder="Name"
-            required
-            className=" w-[300px] h-[42px] mb-2 pl-4 py-2 border bg-gray-100 rounded-xl placeholder-gray-400  outline-gray-300"
-            value={user.name}
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
-          />
-        </div>
-
-        <div>
           <input
             id="email"
             name="email"
@@ -105,28 +81,26 @@ export function SignUpForm() {
         </div>
       </div>
 
-      
       <div className="flex items-center justify-center mb-4">
-        <Button
+        <button
           type="submit"
           className="w-[300px] h-[42px] flex justify-center items-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          disabled={isLoading}
         >
-          {isLoading ? "Signing up..." : "Sign up"}
-        </Button>
+          Sign in
+        </button>
       </div>
 
+      {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
 
       <div className="text-sm text-center">
-        Already have an account?{" "}
+        Don&apos;t have an account?{" "}
         <Link
-          href="/login"
+          href="/signup"
           className="font-medium text-blue-600 hover:text-blue-700"
         >
-          Log in
+          Sign up
         </Link>
       </div>
     </form>
-  )
+  );
 }
-

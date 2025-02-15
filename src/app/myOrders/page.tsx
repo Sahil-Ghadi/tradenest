@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { RequestList } from "@/components/request-list";
 import type { Request } from "@/types/request";
-import axios from "axios";
+import { OrderList } from "@/components/order-list";
 
 export default function AdminPage() {
   const [requests, setRequests] = useState<Request[]>([]);
@@ -16,21 +17,22 @@ export default function AdminPage() {
       setError(null);
 
       try {
-        const { data } = await axios.get("/api/admin/requests");
-
-        if (data.success) {
-          setRequests(Array.isArray(data.data.documents) ? data.data.documents : []);
-        } else {
-          setError(data.error?.message || "Failed to fetch requests");
-        }
+        const  data  = await axios.get("/api/orders");
+        console.log(data);
+        
+        // if (data.success) {
+        //   setRequests(Array.isArray(data.data.documents) ? data.data.documents : []);
+        // } else {
+        //   setError(data.message || "Failed to fetch requests");
+        // }
       } catch (error) {
         setError("An error occurred while fetching requests.");
-        console.error("Error fetching requests:", error);
-      }finally {
+        console.error("Error fetching orders:", error);
+      } finally {
         setLoading(false);
       }
-
     }
+
     fetchRequests();
   }, []);
 
@@ -39,11 +41,11 @@ export default function AdminPage() {
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard - Requests</h1>
 
       {loading ? (
-        <p className="text-center text-gray-500">Loading requests...</p>
+        <p className="text-center text-gray-500 animate-pulse">Loading requests...</p>
       ) : error ? (
         <p className="text-center text-red-500">{error}</p>
       ) : requests.length > 0 ? (
-        <RequestList requests={requests} />
+        <OrderList requests={requests} />
       ) : (
         <p className="text-center text-gray-500">No requests found.</p>
       )}
