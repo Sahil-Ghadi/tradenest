@@ -43,7 +43,7 @@ export default function AdminPage() {
           <p className="text-center text-red-500 mt-4">{error}</p>
         ) : requests.length > 0 ? (
           <div className="overflow-x-auto">
-            <RequestList requests={requests} />
+            <OrderList requests={requests} />
           </div>
         ) : (
           <p className="text-center text-gray-500 mt-4">No orders found.</p>

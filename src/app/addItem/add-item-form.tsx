@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useAdminStore } from "@/store/adminStore"
-import { log } from "node:console"
 
 export default function AddItemForm() {
 
@@ -67,7 +66,7 @@ export default function AddItemForm() {
         <Label htmlFor="price">Price &#8377;</Label>
         <Input 
         className="w-[350px] "
-        id="price" name="price" type="number" step="0.01" required 
+        id="price" name="price" type="number" step="1" required 
         value={data.price}
         onChange={(e) => setData({ ...data, price: e.target.value })}/>
       </div>

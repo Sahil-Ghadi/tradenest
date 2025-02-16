@@ -13,23 +13,23 @@ export default function ProductCard({ $id, name, price,sellerName ,status}: Item
   const { user } = useAuthStore()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [url,setUrl] = useState<string>('/Cool-bg.jpg');
+  const [url,setUrl] = useState<string>();
 
   useEffect(() => {
     const fetchFile = async () => {
       const data = await GetFile($id);
       if (data.success) {
-        setUrl(data.data ?? "/Cool-bg.jpg" )
+        setUrl(data.data  )
         console.log(url);
         
       } else {
-        setUrl("/Cool-bg.jpg")
+        setUrl(undefined )
       }
     };
 
     fetchFile();
   
-  }, [])
+  }, [$id])
   
 
   const handleBuyItem = async () => {
@@ -39,13 +39,16 @@ export default function ProductCard({ $id, name, price,sellerName ,status}: Item
     }
 
     setLoading(true)
-    const response = await Buyitem($id)
-
-    if (response.success) {
-      alert("Item purchase request sent successfully!")
-      router.push("/myOrders")// Refresh the page after purchase
-    } else {
-      alert("Failed to purchase item. Please try again.")
+    try {
+      const response = await Buyitem($id);
+      if (response.success) {
+        alert("Item purchase request sent successfully!");
+        router.push("/myOrders");
+      } else {
+        alert(response.error || "Failed to purchase item. Please try again.");
+      }
+    } catch (error) {
+      alert("An unexpected error occurred. Please try again later.");
     }
 
     setLoading(false)
@@ -55,7 +58,7 @@ export default function ProductCard({ $id, name, price,sellerName ,status}: Item
     <div className="group relative w-full max-w-sm overflow-hidden rounded-2xl border border-gray-300 bg-gradient-to-br from-white to-gray-100 shadow-lg transition-all hover:shadow-xl">
       <div className="aspect-square w-full overflow-hidden rounded-t-2xl">
         <Image
-          src={url}
+          src={url || "/Cool-bg.jpg"}
           alt={name}
           width={400}
           height={300}
