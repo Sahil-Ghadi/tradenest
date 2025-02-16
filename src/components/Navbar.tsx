@@ -2,11 +2,17 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
+import Link from "next/link";
 
 const Navbar = () => {
   const { logout, user } = useAuthStore();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const logoutfn = async () => {
+    await logout();
+    router.push("/")
+  }
 
   const navItems = [
     { name: "Login", slug: "/login", active: !user },
@@ -15,16 +21,20 @@ const Navbar = () => {
     { name: "My Orders", slug: "/myOrders", active: user },
     { name: "My Requests", slug: "/admin", active: user },
     { name: "My Profile", slug: "/dashboard", active: user },
+    { name: "All Items", slug: "/", active: user },
+
   ];
 
   return (
     <nav className="flex items-center justify-between px-6 sm:px-10 pt-6 relative">
       {/* Logo */}
+      <Link href={"/"}>
       <div className="bg-white sm:px-6 px-4 py-1 sm:py-2 rounded-full border-2 border-blue-600">
-        <div className="font-bold text-2xl sm:text-3xl">
+      <div className="font-bold text-2xl sm:text-3xl">
           Trade<span className="text-blue-700">NEST</span>
         </div>
       </div>
+      </Link>
 
       {/* Desktop Navigation (Before Login) */}
       {!user && (
@@ -103,7 +113,7 @@ const Navbar = () => {
               )
           )}
           <button
-            onClick={logout}
+            onClick={logoutfn}
             className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-md"
           >
             Logout

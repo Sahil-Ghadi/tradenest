@@ -75,7 +75,7 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {requests.map((request, index) => (
-        <Card key={request.$id || `fallback-key-${index}`}>
+        <Card className="mx-2" key={request.$id || `fallback-key-${index}`}>
           <CardHeader className="px-6 pt-6 pb-3">
             <CardTitle className="text-3xl font-semibold capitalize">
               {request.Itemname}

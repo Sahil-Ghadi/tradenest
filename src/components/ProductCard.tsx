@@ -8,7 +8,7 @@ import { useAdminStore } from "@/store/adminStore"
 import { useAuthStore } from "@/store/authStore"
 import { useRouter } from "next/navigation"
 
-export default function ProductCard({ $id, name, price }: Item) {
+export default function ProductCard({ $id, name, price,sellerName ,status}: Item) {
   const { Buyitem } = useAdminStore()
   const { user } = useAuthStore()
   const router = useRouter()
@@ -25,7 +25,7 @@ export default function ProductCard({ $id, name, price }: Item) {
 
     if (response.success) {
       alert("Item purchase request sent successfully!")
-      router.refresh() // Refresh the page after purchase
+      router.push("/myOrders")// Refresh the page after purchase
     } else {
       alert("Failed to purchase item. Please try again.")
     }
@@ -44,17 +44,19 @@ export default function ProductCard({ $id, name, price }: Item) {
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
-      <div className="p-5 space-y-3">
-        <h3 className="ml-1 text-2xl font-bold text-gray-700 capitalize tracking-wide">{name}</h3>
+      <div className="p-4 space-y-3">
+        <h3 className="ml-1 text-xl font-bold text-gray-700 capitalize tracking-wide">{name}</h3>
+        <h3 className="ml-1 text-xl font-bold text-gray-700 capitalize tracking-wide">Sold by: {sellerName}</h3>
+        <p>{status}</p>
         <div className="flex justify-between items-center">
-          <span className="text-3xl font-bold text-black">&#8377;{price}/-</span>
+          <span className="text-2xl font-bold text-black">&#8377;{price}/-</span>
           <Button
             className="flex items-center gap-2 rounded-lg bg-gradient-to-r hover:bg-gradient-to-l active:bg-gradient-to-l from-green-400 to-teal-600 px-5 py-6 text-sm font-semibold text-white shadow-md active:to-teal-600 active:from-green-400 hover:to-teal-600 hover:from-green-400 active:scale-95 transition"
             onClick={handleBuyItem}
-            disabled={loading}
+            disabled={loading || status==="REQUESTED"}
           >
             <ShoppingCart className="h-4 w-4" />
-            {loading ? "Processing..." : "Add to Cart"}
+            {loading ? "Processing..." : "Buy Item"}
           </Button>
         </div>
       </div>
