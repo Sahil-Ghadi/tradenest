@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState,useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -14,6 +14,8 @@ export default function AddItemForm() {
     price:string
   }
 
+  const [fileName, setFileName] = useState("No file chosen");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("");
   const {CreateItem} = useAdminStore()
@@ -55,27 +57,51 @@ export default function AddItemForm() {
   return (
     <form onSubmit={onSubmit} className="flex flex-col items-center justify-center p-8">
       <div>
-        <Label className="text-white pl-2 mb-2 font-medium tracking-wide" htmlFor="name">Item Name</Label>
         <Input 
         className="pl-3 w-[350px] h-[42px] py-2 mb-4 border bg-gray-100 rounded-xl outline-gray-300"
         id="name" name="name" required
         value={data.name}
+        placeholder="Item Name"
         onChange={(e) => setData({ ...data, name: e.target.value })} />
       </div>
       <div>
-        <Label className="text-white pl-2 mb-2 font-medium tracking-wide" htmlFor="price">Price &#8377;</Label>
         <Input 
         className="pl-3 w-[350px] h-[42px] py-2 mb-4 border bg-gray-100 rounded-xl outline-gray-300"
         id="price" name="price" type="number" step="1" required 
         value={data.price}
+        placeholder="Price &#8377;"
         onChange={(e) => setData({ ...data, price: e.target.value })}/>
       </div>
-      <div>
-        <Label className="text-white pl-2 mb-2 font-medium tracking-wide" htmlFor="image">Item Image</Label>
-        <Input id="image" name="image" type="file" className="pl-3 w-[350px] h-[42px] py-2 mb-4 border bg-gray-100 rounded-xl outline-gray-300" accept="image/*"  onChange={(e) => setFile(e.target.files?.[0] || null)} required />
+      <div className="flex flex-col">
+
+      {/* Hidden File Input */}
+      <input
+        id="image"
+        name="image"
+        type="file"
+        className="hidden"
+        accept="image/*"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          setFileName(file ? file.name : "No file chosen");
+        }}
+        ref={fileInputRef}
+      />
+
+      {/* Custom File Upload Button */}
+      <div className="flex items-center w-[350px] h-[42px] mb-4 border bg-gray-100 rounded-xl outline-gray-300">
+        <button
+          type="button"
+          className="bg-blue-600 text-white px-4 py-2 rounded-l-xl hover:bg-blue-700 transition"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          Choose File
+        </button>
+        <span className="px-3 text-gray-600 truncate">{fileName}</span>
       </div>
+    </div>
       <Button 
-      className="w-[250px] mt-8 rounded-full"
+      className="mt-5 w-[300px] h-[42px] flex justify-center items-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
       type="submit" disabled={isLoading}>{isLoading?"Adding Item" : "Add Item"}
       </Button>
     </form>
