@@ -10,12 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 interface RequestListProps {
   requests: Request[];
 }
 
 export function RequestList({ requests: initialRequests }: RequestListProps) {
+  const router = useRouter()
   const { ApproveReq, RejectReq } = useAdminStore();
   const [requests, setRequests] = useState<Request[]>(initialRequests);
   const [pendingAction, setPendingAction] = useState<{
@@ -32,16 +34,16 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
       setPendingAction({ id, type: "approve" });
 
       const res = await ApproveReq(id, itemId, buyerName);
+      router.push("/")
+
       if (!res.success)
         throw new Error(res.error?.message || "Approval failed");
-
       // ✅ Update UI after successful approval
       setRequests((prevRequests) =>
         prevRequests.map((req) =>
           req.$id === id ? { ...req, status: "APPROVE" } : req
         )
       );
-
       console.log("Approved successfully");
     } catch (error: any) {
       console.log(error.message);
@@ -57,7 +59,7 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
       const res = await RejectReq(id, itemId);
       if (!res.success)
         throw new Error(res.error?.message || "Rejection failed");
-
+      router.push("/")
       // ✅ Update UI after successful rejection
       setRequests((prevRequests) =>
         prevRequests.map((req) =>
