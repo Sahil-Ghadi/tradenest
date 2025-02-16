@@ -31,18 +31,25 @@ export default function AdminPage() {
   }, [GetMyOrders]);
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard - Requests</h1>
-
-      {loading ? (
-        <p className="text-center text-gray-500">Loading requests...</p>
-      ) : error ? (
-        <p className="text-center text-red-500">{error}</p>
-      ) : requests.length > 0 ? (
-        <OrderList requests={requests} />
-      ) : (
-        <p className="text-center text-gray-500">No requests found.</p>
-      )}
+    <div className="mx-4 sm:mx-10">
+      <div className="bg-gray-200 rounded-3xl mt-6 sm:mt-7 h-auto min-h-[535px] flex flex-col border-4 border-dashed border-gray-400 p-4 sm:p-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center mb-3 sm:mb-5">
+          Customer Dashboard - Orders
+        </h1>
+  
+        {loading ? (
+          <p className="text-center text-gray-500 mt-2">Loading orders...</p>
+        ) : error ? (
+          <p className="text-center text-red-500 mt-4">{error}</p>
+        ) : requests.length > 0 ? (
+          <div className="overflow-x-auto">
+            <RequestList requests={requests} />
+          </div>
+        ) : (
+          <p className="text-center text-gray-500 mt-4">No orders found.</p>
+        )}
+      </div>
     </div>
   );
 }
+

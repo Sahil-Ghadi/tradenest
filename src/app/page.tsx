@@ -39,7 +39,7 @@ export default function Home() {
                </div>
              ))
            ) : (
-             <p className="text-gray-900">No products available.</p>
+             <p className="text-gray-900 pl-5">No products available.</p>
            )}
          </div>
        </main>

@@ -20,7 +20,7 @@ const Navbar = () => {
   return (
     <nav className="flex items-center justify-between bg-transparent px-6 sm:px-10 pt-6 relative">
       {/* Logo */}
-      <div className="bg-white px-6 py-2 border-double rounded-full border-2 border-blue-600">
+      <div className="bg-white px-6 py-2 rounded-full border-2 border-blue-600">
         <div className="font-bold text-2xl sm:text-3xl">
           Trade<span className="text-blue-700">NEST</span>
         </div>
@@ -77,7 +77,7 @@ const Navbar = () => {
         <div className="md:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="px-3 py-2 border-2 border-blue-600 rounded-lg text-blue-600 hover:bg-blue-100 focus:outline-none"
+            className="px-3 py-2 border-2 border-blue-600 rounded-full text-blue-600 hover:bg-blue-100 focus:outline-none"
           >
             ☰
           </button>
