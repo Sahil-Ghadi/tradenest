@@ -33,9 +33,11 @@ export default function LoginForm() {
     if (loginResponse.error) {
       setError(() => loginResponse.error!.message);
     }
+    else{
+      router.push('/')
 
+    }
     setIsLoading(() => false);
-    router.push('/')
   };
 
   return (
@@ -73,6 +75,7 @@ export default function LoginForm() {
       <div className="flex items-center justify-center mb-4">
         <button
           type="submit"
+          disabled={isLoading}
           className="w-[300px] h-[42px] flex justify-center items-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           {isLoading ? "Logging up..." : "Log in"}

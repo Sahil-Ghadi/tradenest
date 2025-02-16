@@ -1,27 +1,32 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import getOrCreateDB from "./models/server/dbSet";
-import getOrCreateStorage from "./models/server/storageSet";
+const protectedRoutes = ["/item"];
+const authRoutes = ["/login", "/signup"];
 
 export async function middleware(request: NextRequest) {
-//   await Promise.all([getOrCreateDB(), getOrCreateStorage()]);
+    const { pathname } = request.nextUrl;
 
-//   // Define protected routes
-//    const protectedRoutes = ["/admin", "/item", "/addItem","/dashboard"];
+    // Get the Appwrite session cookie (Appwrite names it `a_session_<project_id>`)
+    const authToken = request.cookies.get(`a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`)?.value;
+    
+    const isAuthenticated = !!authToken; // User is authenticated if token exists
 
-//   // Check if the current path is a protected route
-//    if (protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))) {
-//     const authToken = request.cookies.get("authToken")?.value; // Replace with your actual auth method
+    // ✅ Redirect unauthenticated users trying to access protected routes
+    if (protectedRoutes.some(route => pathname.startsWith(route)) && !isAuthenticated) {
+        return NextResponse.redirect(new URL("/login", request.url));
+    }
 
-//     if (!authToken) {
-//     // Redirect to login if not authenticated
-//     return NextResponse.redirect(new URL("/login", request.url));
-//    }
-//  }
+    // ✅ Redirect logged-in users away from login/signup pages
+    if (authRoutes.some(route => pathname.startsWith(route)) && isAuthenticated) {
+        return NextResponse.redirect(new URL("/", request.url)); // Redirect to home/dashboard
+    }
 
-//   return NextResponse.next();
-// }
-
-return NextResponse.next();
+    return NextResponse.next();
 }
+
+export const config = {
+    matcher: [
+        "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    ],
+};

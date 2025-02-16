@@ -57,9 +57,9 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
       setPendingAction({ id, type: "reject" });
 
       const res = await RejectReq(id, itemId);
+      router.push("/")
       if (!res.success)
         throw new Error(res.error?.message || "Rejection failed");
-      router.push("/")
       // ✅ Update UI after successful rejection
       setRequests((prevRequests) =>
         prevRequests.map((req) =>

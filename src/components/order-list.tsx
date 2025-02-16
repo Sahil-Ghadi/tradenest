@@ -25,8 +25,8 @@ export function OrderList({ requests: initialRequests }: RequestListProps) {
         <CardTitle className="text-2xl">{request.Itemname}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground">Seller: {request.sellerName}</p>
-        <p className="text-sm text-muted-foreground">Price: Rs. {request.price}</p>
+        <p className="text-lg text-muted-foreground">Seller: {request.sellerName}</p>
+        <p className="text-lg text-muted-foreground">Price: Rs. {request.price}</p>
       </CardContent>
       <CardFooter className="flex justify-items-center">
          <div 

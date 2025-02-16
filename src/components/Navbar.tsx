@@ -11,7 +11,7 @@ const Navbar = () => {
 
   const logoutfn = async () => {
     await logout();
-    router.push("/")
+    router.push("/login")
     setMenuOpen(false);
 
   }
