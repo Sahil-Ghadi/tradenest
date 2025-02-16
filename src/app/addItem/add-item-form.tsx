@@ -56,24 +56,24 @@ export default function AddItemForm() {
   return (
     <form onSubmit={onSubmit} className="flex flex-col items-center justify-center p-8">
       <div>
-        <Label htmlFor="name">Item Name</Label>
+        <Label className="text-white pl-2 mb-2 font-medium tracking-wide" htmlFor="name">Item Name</Label>
         <Input 
-        className="w-[350px] "
+        className="pl-3 w-[350px] h-[42px] py-2 mb-4 border bg-gray-100 rounded-xl outline-gray-300"
         id="name" name="name" required
         value={data.name}
         onChange={(e) => setData({ ...data, name: e.target.value })} />
       </div>
-      <div className="pt-5">
-        <Label htmlFor="price">Price &#8377;</Label>
+      <div>
+        <Label className="text-white pl-2 mb-2 font-medium tracking-wide" htmlFor="price">Price &#8377;</Label>
         <Input 
-        className="w-[350px] "
+        className="pl-3 w-[350px] h-[42px] py-2 mb-4 border bg-gray-100 rounded-xl outline-gray-300"
         id="price" name="price" type="number" step="0.01" required 
         value={data.price}
         onChange={(e) => setData({ ...data, price: e.target.value })}/>
       </div>
       <div>
-        <Label htmlFor="image">Item Image</Label>
-        <Input id="image" name="image" type="file" className="w-[350px]" accept="image/*"  onChange={(e) => setFile(e.target.files?.[0] || null)} required />
+        <Label className="text-white pl-2 mb-2 font-medium tracking-wide" htmlFor="image">Item Image</Label>
+        <Input id="image" name="image" type="file" className="pl-3 w-[350px] h-[42px] py-2 mb-4 border bg-gray-100 rounded-xl outline-gray-300" accept="image/*"  onChange={(e) => setFile(e.target.files?.[0] || null)} required />
       </div>
       <Button 
       className="w-[250px] mt-8 rounded-full"
