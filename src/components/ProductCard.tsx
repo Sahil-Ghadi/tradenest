@@ -35,7 +35,7 @@ export default function ProductCard({ $id, name, price,sellerName ,status}: Item
 
   return (
     <div className="group relative w-full max-w-sm overflow-hidden rounded-2xl border border-gray-300 bg-gradient-to-br from-white to-gray-100 shadow-lg transition-all hover:shadow-xl">
-      <div className="aspect-square w-full overflow-hidden rounded-t-2xl">
+      <div className="h-[250px] w-full overflow-hidden rounded-t-2xl">
         <Image
           src={"/Cool-bg.jpg"}
           alt={name}
@@ -44,12 +44,12 @@ export default function ProductCard({ $id, name, price,sellerName ,status}: Item
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
-      <div className="p-4 space-y-3">
-        <h3 className="ml-1 text-xl font-bold text-gray-700 capitalize tracking-wide">{name}</h3>
-        <h3 className="ml-1 text-xl font-bold text-gray-700 capitalize tracking-wide">Sold by: {sellerName}</h3>
-        <p>{status}</p>
+      <div className="p-4">
+        <h3 className="ml-1 text-2xl font-semibold text-gray-900 capitalize ">{name}</h3>
+        <h3 className="ml-1 text-xl font-medium text-gray-700 capitalize ">Sold by: {sellerName}</h3>
+        <p className={`ml-1 mt-1 text-xl font-bold ${status === "REQUESTED" ? "text-red-500" : status === "UNSOLD" ? "text-gray-500" : "text-gray-700"}`}>{status}</p>
         <div className="flex justify-between items-center">
-          <span className="text-2xl font-bold text-black">&#8377;{price}/-</span>
+          <span className="ml-1 text-3xl font-bold text-green-600">&#8377;{price}/-</span>
           <Button
             className="flex items-center gap-2 rounded-lg bg-gradient-to-r hover:bg-gradient-to-l active:bg-gradient-to-l from-green-400 to-teal-600 px-5 py-6 text-sm font-semibold text-white shadow-md active:to-teal-600 active:from-green-400 hover:to-teal-600 hover:from-green-400 active:scale-95 transition"
             onClick={handleBuyItem}

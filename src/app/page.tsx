@@ -40,7 +40,7 @@ export default function Home() {
 
   return (
     <main className="sm:px-5 bg-white h-screen">
-      <h1 className="mb-5 pt-5 sm:ml-4 text-4xl text-black sm:text-start text-center font-bold">
+      <h1 className="mb-5 pt-5 ml-6 sm:ml-5 text-3xl sm:text-4xl text-black text-start font-bold">
         Featured Products
       </h1>
 
@@ -49,11 +49,11 @@ export default function Home() {
           <span className="animate-spin w-10 h-10 border-4 border-gray-900 border-t-transparent rounded-full"></span>
         </div>
       ) : (
-        <div className="grid justify-center sm:justify-start gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="px-5 pb-5 grid justify-center sm:justify-start gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {items.length > 0 ? (
             items.map((item: Item) => (
-              <div key={item.$id}>
-                <ProductCard {...item} />
+              <div  key={item.$id}>
+                <ProductCard {...item}  />
               </div>
             ))
           ) : (
