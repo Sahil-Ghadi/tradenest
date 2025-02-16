@@ -73,8 +73,6 @@ export default function AddItemForm() {
         onChange={(e) => setData({ ...data, price: e.target.value })}/>
       </div>
       <div className="flex flex-col">
-
-      {/* Hidden File Input */}
       <input
         id="image"
         name="image"
@@ -87,8 +85,6 @@ export default function AddItemForm() {
         }}
         ref={fileInputRef}
       />
-
-      {/* Custom File Upload Button */}
       <div className="flex items-center w-[350px] h-[42px] mb-4 border bg-gray-100 rounded-xl outline-gray-300">
         <button
           type="button"

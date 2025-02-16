@@ -17,6 +17,7 @@ export default function ProductCard({ $id, name, price,sellerName ,status}: Item
 
   useEffect(() => {
     const fetchFile = async () => {
+      router.refresh()
       const data = await GetFile($id);
       if (data.success) {
         setUrl(data.data  )

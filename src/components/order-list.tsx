@@ -37,7 +37,7 @@ export function OrderList({ requests: initialRequests }: RequestListProps) {
             ? "bg-red-200"
             : "bg-gray-200"
          } `}
-         >{request.status}</div>
+         >{request.status === "APPROVE"?"APPROVED":request.status==="REJECT"?"REJECTED":"PENDING"}</div>
       </CardFooter>
     </Card>
   ))}

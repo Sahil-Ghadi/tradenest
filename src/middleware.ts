@@ -5,7 +5,6 @@ import getOrCreateDB from "./models/server/dbSet";
 import getOrCreateStorage from "./models/server/storageSet";
 
 export async function middleware(request: NextRequest) {
-//   // Perform any necessary setup
 //   await Promise.all([getOrCreateDB(), getOrCreateStorage()]);
 
 //   // Define protected routes

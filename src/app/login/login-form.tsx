@@ -75,8 +75,8 @@ export default function LoginForm() {
           type="submit"
           className="w-[300px] h-[42px] flex justify-center items-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          Sign in
-        </button>
+          {isLoading ? "Logging up..." : "Log in"}
+          </button>
       </div>
 
       {error && <div className="text-red-600 dark:text-red-400 text-sm mt-2">{error}</div>}
@@ -87,7 +87,7 @@ export default function LoginForm() {
           href="/signup"
           className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-500"
         >
-          {isLoading ? "Logging up..." : "Log in"}
+          Sign Up
         </Link>
       </div>
     </form>
