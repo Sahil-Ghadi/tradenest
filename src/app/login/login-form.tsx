@@ -39,7 +39,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center">
         <div className="w-[300px]">
           <input
@@ -49,7 +49,7 @@ export default function LoginForm() {
             autoComplete="email"
             placeholder="Email"
             required
-            className="pl-4 w-[300px] h-[42px] py-2 mb-2 border bg-gray-100 rounded-xl placeholder-gray-400 outline-gray-300"
+            className="pl-4 w-[300px] h-[42px] py-2 mb-2 border bg-gray-100 dark:bg-gray-800 rounded-xl placeholder-gray-400 dark:placeholder-gray-500 outline-gray-300 dark:outline-gray-600 text-black dark:text-white"
             value={user.email}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
           />
@@ -63,7 +63,7 @@ export default function LoginForm() {
             autoComplete="current-password"
             placeholder="Password"
             required
-            className="pl-4 w-[300px] h-[42px] py-2 mb-4 border bg-gray-100 rounded-xl placeholder-gray-400 outline-gray-300"
+            className="pl-4 w-[300px] h-[42px] py-2 mb-4 border bg-gray-100 dark:bg-gray-800 rounded-xl placeholder-gray-400 dark:placeholder-gray-500 outline-gray-300 dark:outline-gray-600 text-black dark:text-white"
             value={user.password}
             onChange={(e) => setUser({ ...user, password: e.target.value })}
           />
@@ -73,19 +73,19 @@ export default function LoginForm() {
       <div className="flex items-center justify-center mb-4">
         <button
           type="submit"
-          className="w-[300px] h-[42px] flex justify-center items-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="w-[300px] h-[42px] flex justify-center items-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Sign in
         </button>
       </div>
 
-      {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
+      {error && <div className="text-red-600 dark:text-red-400 text-sm mt-2">{error}</div>}
 
-      <div className="text-sm text-center">
+      <div className="text-sm text-center text-black dark:text-white">
         Don&apos;t have an account?{" "}
         <Link
           href="/signup"
-          className="font-medium text-blue-600 hover:text-blue-700"
+          className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-500"
         >
           Sign up
         </Link>
