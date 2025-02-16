@@ -32,7 +32,7 @@ interface AdminStore {
 
   ): Promise<{
     success: boolean;
-    error?: AppwriteException | null;
+    error?: AppwriteException | null | string;
   }>;
   CreateReq(
     Itemname: string,
@@ -73,7 +73,10 @@ export const useAdminStore = create<AdminStore>()(
       async GetItems() {
         try {
           const items = await databases.listDocuments(db, itemsCollection, [
-            Query.equal("status", "UNSOLD"),
+            Query.or([
+              Query.equal("status", "UNSOLD"),
+              Query.equal("status", "REQUESTED")
+            ])
           ]);
           return { success: true, data: items };
         } catch (error) {
@@ -125,12 +128,17 @@ export const useAdminStore = create<AdminStore>()(
           const { user } = useAuthStore.getState();
           if (!user) return { success: false };
       
-          // Fetch item details to get sellerName and price
           const item = await databases.getDocument(db, itemsCollection, itemId);
           if (!item) return { success: false };
+
+          if(item.sellerName === user.name) return {
+            success: false,
+            error:"Can't purchase your own item"
+          }
       
           await databases.updateDocument(db, itemsCollection, itemId, {
             buyerName: user.name,
+            status:"REQUESTED"
           });
       
           // Create a request in requestCollection

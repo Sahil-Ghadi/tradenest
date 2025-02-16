@@ -87,7 +87,7 @@ export default function LoginForm() {
           href="/signup"
           className="font-medium text-blue-600 hover:text-blue-700"
         >
-          Sign up
+          {isLoading ? "Logging up..." : "Log in"}
         </Link>
       </div>
     </form>
