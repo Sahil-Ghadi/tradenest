@@ -32,13 +32,13 @@ export default function AdminPage() {
 
   return (
     <div className="mx-4 sm:mx-10">
-      <div className="bg-gray-200 rounded-3xl mt-6 sm:mt-7 h-auto min-h-[535px] flex flex-col border-4 border-dashed border-gray-400 p-4 sm:p-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-center mb-3 sm:mb-5">
-          Customer Dashboard - Orders
+      <div className="bg-slate-700 rounded-3xl mt-6 sm:mt-7 h-auto min-h-[535px] flex flex-col border-4 border-blue-500 p-4 sm:p-6">
+        <h1 className="text-2xl text-white sm:text-3xl font-bold text-center mb-3 sm:mb-5">
+          Customer Dashboard - <span className="text-green-400">Orders</span>
         </h1>
   
         {loading ? (
-          <p className="text-center text-gray-500 mt-2">Loading orders...</p>
+          <p className="text-center text-gray-100 mt-2">Loading orders...</p>
         ) : error ? (
           <p className="text-center text-red-500 mt-4">{error}</p>
         ) : requests.length > 0 ? (
@@ -46,7 +46,7 @@ export default function AdminPage() {
             <OrderList requests={requests} />
           </div>
         ) : (
-          <p className="text-center text-gray-500 mt-4">No orders found.</p>
+          <p className="text-center text-gray-100 mt-2">No orders found.</p>
         )}
       </div>
     </div>

@@ -24,6 +24,7 @@ const Dashboard = () => {
           <h2 className="text-3xl font-bold text-white mb-4 text-center">Customer Panel</h2>
           <button
             className="w-full md:w-auto bg-green-500 text-white px-6 py-3 rounded-lg transition hover:bg-green-600 active:scale-95"
+            onClick={() => router.push("/myOrders")}
           >
             View Orders
           </button>
