@@ -89,7 +89,7 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
               Status: {request.status}
             </p>
             <p className="text-md text-muted-foreground">
-              Price: Rs. {request.price}
+              Price: {request.price} Rs
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">

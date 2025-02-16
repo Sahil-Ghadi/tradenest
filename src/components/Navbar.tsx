@@ -87,7 +87,7 @@ const Navbar = () => {
         <div className="md:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="px-3 py-2 border-2 border-blue-600 rounded-lg text-blue-600 hover:bg-blue-100 focus:outline-none"
+            className="px-3 py-2 border-2 border-blue-600 rounded-full text-blue-600 hover:bg-blue-100 focus:outline-none"
           >
             ☰
           </button>
