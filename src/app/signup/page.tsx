@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { SignUpForm } from "./signup-form";
 
 export default function SignUpPage() {

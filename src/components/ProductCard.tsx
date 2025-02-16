@@ -30,7 +30,7 @@ export default function ProductCard({ $id, name, price,sellerName ,status}: Item
 
     fetchFile();
   
-  }, [$id])
+  }, [$id,router,url,GetFile])
   
 
   const handleBuyItem = async () => {

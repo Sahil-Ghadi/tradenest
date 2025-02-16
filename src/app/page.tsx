@@ -28,7 +28,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [fetchItems]);
 
   if (!user)
     return (

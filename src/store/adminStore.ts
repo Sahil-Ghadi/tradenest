@@ -6,7 +6,6 @@ import { useAuthStore } from "./authStore";
 import { AppwriteException, ID, Models, Query } from "appwrite";
 import { databases, storage } from "@/models/client/config";
 import { db, ItemAttachmentBucket, itemsCollection, requestCollection } from "@/models/name";
-import { Item } from "@/types/item";
 
 interface AdminStore {
   user: Models.User<any> | null;

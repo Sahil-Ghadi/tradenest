@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RequestList } from "@/components/request-list";
 import type { Request } from "@/types/request";
 import { useAdminStore } from "@/store/adminStore";
 import { OrderList } from "@/components/order-list";
@@ -35,7 +34,7 @@ export default function AdminPage() {
       setLoading(false);
     }
     fetchRequests();
-  }, [GetMyOrders]);
+  }, [GetMyOrders,router,user]);
 
   return (
     <div className="mx-4 sm:mx-10">

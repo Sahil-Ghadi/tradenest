@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { Request } from "@/types/request";
-import { Button } from "@/components/ui/button";
-import { useAdminStore } from "@/store/adminStore";
+
 import {
   Card,
   CardContent,
@@ -16,7 +15,7 @@ interface RequestListProps {
 }
 
 export function OrderList({ requests: initialRequests }: RequestListProps) {
-  const [requests, setRequests] = useState<Request[]>(initialRequests);
+  const requests =initialRequests;
   return (
 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
   {requests.map((request, index) => (
