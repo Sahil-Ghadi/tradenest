@@ -89,7 +89,7 @@ export default function AddItemForm() {
       />
 
       {/* Custom File Upload Button */}
-      <div className="flex items-center w-[350px] h-[42px] mb-4 border bg-gray-100 rounded-xl outline-gray-300">
+      <div className="overflow-hidden flex items-center w-[350px] h-[42px] mb-4 border bg-gray-100 rounded-xl outline-gray-300">
         <button
           type="button"
           className="bg-blue-600 text-white px-4 py-2 rounded-l-xl hover:bg-blue-700 transition"

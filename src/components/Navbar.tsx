@@ -75,7 +75,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown Menu - Only shown when menuOpen is true */}
       {menuOpen && (
-        <div className="absolute top-16 right-6 w-48 bg-white shadow-2xl rounded-lg p-2 lg:hidden">
+        <div className="z-10 absolute top-16 right-6 w-48 bg-white shadow-2xl rounded-lg p-2 lg:hidden">
           {navItems.map(
             (item) =>
               item.active && (
