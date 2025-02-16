@@ -16,7 +16,6 @@ export default function Home() {
     try {
       setLoading(true); // Start loading
       const data = await GetItems();
-      console.log("Fetched Data:", data.data.documents);
 
       setItems(Array.isArray(data.data.documents) ? data.data.documents : []);
     } catch (error) {

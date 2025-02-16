@@ -3,16 +3,34 @@ import Image from "next/image"
 import { ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Item } from "@/types/item"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAdminStore } from "@/store/adminStore"
 import { useAuthStore } from "@/store/authStore"
 import { useRouter } from "next/navigation"
 
 export default function ProductCard({ $id, name, price,sellerName ,status}: Item) {
-  const { Buyitem } = useAdminStore()
+  const { Buyitem,GetFile } = useAdminStore()
   const { user } = useAuthStore()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [url,setUrl] = useState<string>('/Cool-bg.jpg');
+
+  useEffect(() => {
+    const fetchFile = async () => {
+      const data = await GetFile($id);
+      if (data.success) {
+        setUrl(data.data ?? "/Cool-bg.jpg" )
+        console.log(url);
+        
+      } else {
+        setUrl("/Cool-bg.jpg")
+      }
+    };
+
+    fetchFile();
+  
+  }, [])
+  
 
   const handleBuyItem = async () => {
     if (!user) {
@@ -37,7 +55,7 @@ export default function ProductCard({ $id, name, price,sellerName ,status}: Item
     <div className="group relative w-full max-w-sm overflow-hidden rounded-2xl border border-gray-300 bg-gradient-to-br from-white to-gray-100 shadow-lg transition-all hover:shadow-xl">
       <div className="aspect-square w-full overflow-hidden rounded-t-2xl">
         <Image
-          src={"/Cool-bg.jpg"}
+          src={url}
           alt={name}
           width={400}
           height={300}

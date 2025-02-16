@@ -3,8 +3,8 @@ import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 import { useAuthStore } from "./authStore";
 import { AppwriteException, ID, Models, Query } from "appwrite";
-import { databases } from "@/models/client/config";
-import { db, itemsCollection, requestCollection } from "@/models/name";
+import { databases, storage } from "@/models/client/config";
+import { db, ItemAttachmentBucket, itemsCollection, requestCollection } from "@/models/name";
 import { Item } from "@/types/item";
 
 interface AdminStore {
@@ -46,6 +46,7 @@ interface AdminStore {
   CreateItem(
     name: string,
     price: number,
+    file:File
   ): Promise<{
     success: boolean;
     error?: AppwriteException | null;
@@ -59,6 +60,11 @@ interface AdminStore {
   }>;
   ApproveReq(reqId: string,itemId:string,buyerName: string): Promise<{
     success: boolean;
+    error?: AppwriteException | null;
+  }>;
+  GetFile(id:string): Promise<{
+    success: boolean;
+    data?:string,
     error?: AppwriteException | null;
   }>;
 }
@@ -185,21 +191,35 @@ export const useAdminStore = create<AdminStore>()(
         }
       },
 
-      async CreateItem(name: string, price: number) {
+      async CreateItem(name: string, price: number,file:File) {
         try {
           const { user } = useAuthStore.getState();
           if (!user) return { success: false };
-
-          await databases.createDocument(db, itemsCollection, ID.unique(), {
+          const id = ID.unique()
+          await databases.createDocument(db, itemsCollection,id , {
             name,
             buyerName: "",
             price,
             sellerName: user.name,
             status: "UNSOLD",
           });
+          await storage.createFile(ItemAttachmentBucket,id,file)
+
           return { success: true };
         } catch (error) {
           console.log("Error in CreateItem:", error);
+          return {
+            success: false,
+            error: error instanceof AppwriteException ? error : null,
+          };
+        }
+      },
+      async GetFile(id:string){
+        try {
+          const url = await storage.getFileView(ItemAttachmentBucket,id)
+          return { success: true , data:url };
+        } catch (error) {
+          console.log("Error in Getfile:", error);
           return {
             success: false,
             error: error instanceof AppwriteException ? error : null,
@@ -244,6 +264,7 @@ export const useAdminStore = create<AdminStore>()(
           };
         }
       },
+      
     })),
     {
       name: "admin",
