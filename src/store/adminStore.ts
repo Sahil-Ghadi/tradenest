@@ -3,9 +3,8 @@ import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 import { useAuthStore } from "./authStore";
 import { AppwriteException, ID, Models, Query } from "appwrite";
-import { databases } from "@/models/client/config";
-import { db, itemsCollection, requestCollection } from "@/models/name";
-import { Item } from "@/types/item";
+import { databases,storage } from "@/models/client/config";
+import { db, ItemAttachmentBucket, itemsCollection, requestCollection } from "@/models/name";
 
 interface AdminStore {
   user: Models.User<any> | null;
@@ -61,6 +60,11 @@ interface AdminStore {
     success: boolean;
     error?: AppwriteException | null;
   }>;
+  UploadFile(file:File):
+  Promise<{
+    success: boolean;
+    error?: AppwriteException | null;
+  }>;
 }
 export const useAdminStore = create<AdminStore>()(
   persist(
@@ -72,9 +76,9 @@ export const useAdminStore = create<AdminStore>()(
       },
       async GetItems() {
         try {
-          const items = await databases.listDocuments(db, itemsCollection, [
-            Query.equal("status", "UNSOLD"),
-          ]);
+          const items = await databases.listDocuments(db, itemsCollection, 
+           // [Query.equal("status", "UNSOLD"),]
+        );
           return { success: true, data: items };
         } catch (error) {
           console.log("Error in GetItems:", error);
@@ -95,6 +99,22 @@ export const useAdminStore = create<AdminStore>()(
           return { success: true, data: req };
         } catch (error) {
           console.log("Error in GetItems:", error);
+          return {
+            success: false,
+            error: error instanceof AppwriteException ? error : null,
+          };
+        }
+      },
+      async UploadFile(file:File){
+        try {
+         await storage.createFile(
+          ItemAttachmentBucket,
+          ID.unique(),
+          file
+        )
+        return { success: true };
+        } catch (error) {
+          console.log("Error in file upload:", error);
           return {
             success: false,
             error: error instanceof AppwriteException ? error : null,
@@ -127,6 +147,7 @@ export const useAdminStore = create<AdminStore>()(
 
           await databases.updateDocument(db, itemsCollection, itemId, {
             buyerName: user.name,
+            status:"REQUESTED"
           });
           return { success: true };
         } catch (error) {

@@ -4,5 +4,5 @@ export interface Item{
     buyerName: string;
     sellerName: string;
     price:number;
-    status: "SOLD" | "UNSOLD"
+    status: "SOLD" | "UNSOLD" | "REQUESTED"
 }

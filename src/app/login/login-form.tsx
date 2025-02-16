@@ -74,8 +74,9 @@ export default function LoginForm() {
         <button
           type="submit"
           className="w-[300px] h-[42px] flex justify-center items-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          disabled={isLoading}
         >
-          Sign in
+         {isLoading? "Logging in...":"Log In"}
         </button>
       </div>
 
