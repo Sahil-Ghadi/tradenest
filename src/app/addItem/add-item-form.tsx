@@ -18,9 +18,10 @@ export default function AddItemForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("");
   const {CreateItem} = useAdminStore()
+  const [file, setFile] = useState<File | null>(null);
   const [data,setData] = useState<itemData>({
     name: "",
-    price: ""
+    price: "",
   })
   const router = useRouter()
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,21 +31,26 @@ export default function AddItemForm() {
     const price = data.price
     console.log(data);
     
-    if(!name || !price){
+    if(!name || !price || !file){
      setError(() => "Please fill out all fields");
      return;
     }
     setIsLoading(() => true);
     setError(() => "");
 
-    const res = await CreateItem(name.toString(),Number(price))
-    console.log(res);
+   try {
+     const res = await CreateItem(name.toString(),Number(price),file)
+     console.log(res);
+     
+     if (res.error) {
+       setError(() => res.error!.message);
+     } 
     
-    if (res.error) {
-      setError(() => res.error!.message);
-    } 
-    setIsLoading(() => false);
-    router.push('/item')
+     router.push('/')
+   } catch (error) {
+    setError("Failed to create item. Please try again.");
+   }finally{
+    setIsLoading(false)}
   }
 
   return (
@@ -65,13 +71,13 @@ export default function AddItemForm() {
         value={data.price}
         onChange={(e) => setData({ ...data, price: e.target.value })}/>
       </div>
-      {/* <div>
+      <div>
         <Label htmlFor="image">Item Image</Label>
-        <Input id="image" name="image" type="file" accept="image/*" required />
-      </div> */}
+        <Input id="image" name="image" type="file" className="w-[350px]" accept="image/*"  onChange={(e) => setFile(e.target.files?.[0] || null)} required />
+      </div>
       <Button 
       className="w-[250px] mt-8 rounded-full"
-      type="submit" disabled={isLoading}>Add Item
+      type="submit" disabled={isLoading}>{isLoading?"Adding Item" : "Add Item"}
       </Button>
     </form>
   )
