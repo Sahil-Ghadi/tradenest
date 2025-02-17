@@ -69,15 +69,15 @@ const Navbar = () => {
       <div className="lg:hidden">
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="px-3 py-2 outline outline-2 outline-blue-600 rounded-2xl text-blue-600 hover:bg-blue-100 focus:outline-none"
+          className=" px-3 py-2 outline outline-2 outline-blue-600 rounded-2xl text-blue-600 hover:bg-blue-100 "
         >
           {menuOpen ? "✖" : "☰"}
         </button>
       </div>
 
-      {/* Mobile Dropdown Menu - Only shown when menuOpen is true */}
+      {/* Mobile Dropdown Menu - Only shown when menuOpen is true  */}
       {menuOpen && (
-        <div className="absolute z-30 top-16 right-6 w-48 bg-white shadow-2xl rounded-lg p-2 lg:hidden">
+        <div className="absolute z-30 top-20 right-5 w-48 bg-white shadow-2xl rounded-lg p-2 lg:hidden">
           {navItems.map(
             (item) =>
               item.active && (
