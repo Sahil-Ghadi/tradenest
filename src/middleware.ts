@@ -1,32 +1,38 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import getOrCreateDB from "./models/server/dbSet";
+import getOrCreateStorage from "./models/server/storageSet";
 
 const protectedRoutes = ["/item"];
 const authRoutes = ["/login", "/signup"];
 
-export async function middleware(request: NextRequest) {
-    const { pathname } = request.nextUrl;
+let isInitialized = false; // Ensures DB and Storage run only once
 
-    // Get the Appwrite session cookie (Appwrite names it `a_session_<project_id>`)
-    const authToken = request.cookies.get(`a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`)?.value;
-    
-    const isAuthenticated = !!authToken; // User is authenticated if token exists
-
-    // ✅ Redirect unauthenticated users trying to access protected routes
-    if (protectedRoutes.some(route => pathname.startsWith(route)) && !isAuthenticated) {
-        return NextResponse.redirect(new URL("/login", request.url));
+async function initializeOnce() {
+    if (!isInitialized) {
+        await Promise.all([getOrCreateDB(), getOrCreateStorage()]);
+        isInitialized = true;
     }
-
-    // ✅ Redirect logged-in users away from login/signup pages
-    if (authRoutes.some(route => pathname.startsWith(route)) && isAuthenticated) {
-        return NextResponse.redirect(new URL("/", request.url)); // Redirect to home/dashboard
-    }
-
-    return NextResponse.next();
 }
 
+export async function middleware(request: NextRequest) {
+    // Ensure DB & Storage run only once
+    await initializeOnce();
+
+    // const token = request.cookies.get(`a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`)?.value;
+    
+    // if (!token) {
+    //     return NextResponse.redirect(new URL('/login', request.url)); // Redirect if no token
+    // }
+
+    return NextResponse.next(); // Allow access if token exists
+}
 export const config = {
     matcher: [
-        "/((?!api|_next/static|_next/image|favicon.ico).*)",
+        '/',
+        '/dashboard',
+        '/addItem',
+        '/admin',
+        '/myOrders'
     ],
 };

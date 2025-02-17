@@ -8,27 +8,34 @@ import { useAuthStore } from "@/store/authStore";
 export default function Home() {
   const { GetItems } = useAdminStore();
   const [items, setItems] = useState<Item[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // Loading state
-
-  const user = useAuthStore();
-
-  const fetchItems = async () => {
-    try {
-      setLoading(true); // Start loading
-      const data = await GetItems();
-
-      setItems(Array.isArray(data.data.documents) ? data.data.documents : []);
-    } catch (error) {
-      console.error("Error fetching items:", error);
-      setItems([]);
-    } finally {
-      setLoading(false); // Stop loading after fetch completes
-    }
-  };
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isMounted, setIsMounted] = useState(false); // Fix hydration issue
 
   useEffect(() => {
+    setIsMounted(true); // Ensure component is mounted before accessing Zustand
+  }, []);
+
+  const user = useAuthStore(); // Zustand store
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        setLoading(true);
+        const data = await GetItems();
+        setItems(Array.isArray(data.data.documents) ? data.data.documents : []);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+        setItems([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchItems();
-  }, [fetchItems]);
+  }, []); // ✅ Removed `fetchItems` from dependencies to prevent re-renders
+
+  // ✅ Prevent rendering on the server until mounted
+  if (!isMounted) return null;
 
   if (!user)
     return (
@@ -51,8 +58,8 @@ export default function Home() {
         <div className="px-5 pb-5 grid justify-center sm:justify-start gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {items.length > 0 ? (
             items.map((item: Item) => (
-              <div  key={item.$id}>
-                <ProductCard {...item}  />
+              <div key={item.$id}>
+                <ProductCard {...item} />
               </div>
             ))
           ) : (
