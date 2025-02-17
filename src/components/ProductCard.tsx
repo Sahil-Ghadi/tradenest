@@ -50,6 +50,8 @@ export default function ProductCard({ $id, name, price,sellerName ,status}: Item
       }
     } catch (error) {
       alert("An unexpected error occurred. Please try again later.");
+      console.log(error);
+      
     }
 
     setLoading(false)

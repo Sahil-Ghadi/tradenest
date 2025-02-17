@@ -8,7 +8,7 @@ import { databases, storage } from "@/models/client/config";
 import { db, ItemAttachmentBucket, itemsCollection, requestCollection } from "@/models/name";
 
 interface AdminStore {
-  user: Models.User<any> | null;
+  user: Models.User<Models.Preferences> | null;
   hydrated: boolean;
   setHydrated(): void;
 

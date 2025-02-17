@@ -45,7 +45,8 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
         )
       );
       console.log("Approved successfully");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      if(error instanceof Error)
       console.log(error.message);
     } finally {
       setPendingAction(null);

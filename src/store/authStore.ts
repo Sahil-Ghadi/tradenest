@@ -9,7 +9,7 @@ import { account } from "@/models/client/config";
 interface AuthStore {
   session: Models.Session | null;
   jwt: string | null;
-  user: Models.User<any> | null;
+  user: Models.User<Models.Preferences> | null;
   hydrated: boolean;
 
   setHydrated(): void;
