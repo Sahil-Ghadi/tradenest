@@ -4,6 +4,7 @@ import ProductCard from "@/components/ProductCard";
 import { useAdminStore } from "@/store/adminStore";
 import { Item } from "@/types/item";
 import { useAuthStore } from "@/store/authStore";
+import { title } from "process";
 
 export default function Home() {
   const { GetItems } = useAdminStore();
