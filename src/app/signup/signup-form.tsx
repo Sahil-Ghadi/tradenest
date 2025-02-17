@@ -95,7 +95,7 @@ export function SignUpForm() {
           />
         </div>
       </div>
-
+       {error && <p>{error}</p> }
       
       <div className="flex items-center justify-center mb-4">
         <Button

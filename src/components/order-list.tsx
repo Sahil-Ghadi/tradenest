@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { Request } from "@/types/request";
-import { Button } from "@/components/ui/button";
-import { useAdminStore } from "@/store/adminStore";
+
 import {
   Card,
   CardContent,
@@ -16,7 +15,7 @@ interface RequestListProps {
 }
 
 export function OrderList({ requests: initialRequests }: RequestListProps) {
-  const [requests, setRequests] = useState<Request[]>(initialRequests);
+  const requests =initialRequests;
   return (
 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
   {requests.map((request, index) => (
@@ -25,8 +24,8 @@ export function OrderList({ requests: initialRequests }: RequestListProps) {
         <CardTitle className="text-2xl">{request.Itemname}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground">Seller: {request.sellerName}</p>
-        <p className="text-sm text-muted-foreground">Price: Rs. {request.price}</p>
+        <p className="text-lg text-muted-foreground">Seller: {request.sellerName}</p>
+        <p className="text-lg text-muted-foreground">Price: Rs. {request.price}</p>
       </CardContent>
       <CardFooter className="flex justify-items-center">
          <div 
@@ -37,7 +36,7 @@ export function OrderList({ requests: initialRequests }: RequestListProps) {
             ? "bg-red-200"
             : "bg-gray-200"
          } `}
-         >{request.status}</div>
+         >{request.status === "APPROVE"?"APPROVED":request.status==="REJECT"?"REJECTED":"PENDING"}</div>
       </CardFooter>
     </Card>
   ))}

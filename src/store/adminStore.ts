@@ -1,3 +1,4 @@
+"use client"
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
@@ -5,7 +6,6 @@ import { useAuthStore } from "./authStore";
 import { AppwriteException, ID, Models, Query } from "appwrite";
 import { databases, storage } from "@/models/client/config";
 import { db, ItemAttachmentBucket, itemsCollection, requestCollection } from "@/models/name";
-import { Item } from "@/types/item";
 
 interface AdminStore {
   user: Models.User<any> | null;
@@ -227,15 +227,18 @@ export const useAdminStore = create<AdminStore>()(
         }
       },
 
-      async ApproveReq(reqId: string,itemId: string,buyerName: string) {
+      async ApproveReq(reqId: string, itemId: string, buyerName: string) {
         try {
-          await databases.updateDocument(db, requestCollection, reqId, {
-            status: "APPROVE",
-          });
-          await databases.updateDocument(db, itemsCollection, itemId, {
-            status: "SOLD",
-            buyerName: null,
-          });
+          await Promise.all([
+            databases.updateDocument(db, requestCollection, reqId, {
+              status: "APPROVE",
+            }),
+            databases.updateDocument(db, itemsCollection, itemId, {
+              status: "SOLD",
+              buyerName: buyerName,
+            }),
+          ]);
+          
           return { success: true };
         } catch (error) {
           console.log("Error in ApproveReq:", error);
@@ -245,16 +248,19 @@ export const useAdminStore = create<AdminStore>()(
           };
         }
       },
-
+      
       async RejectReq(reqId: string, itemId: string) {
         try {
-          await databases.updateDocument(db, requestCollection, reqId, {
-            status: "REJECT",
-          });
-          await databases.updateDocument(db, itemsCollection, itemId, {
-            status: "UNSOLD",
-            buyerName: null,
-          });
+          await Promise.all([
+            databases.updateDocument(db, requestCollection, reqId, {
+              status: "REJECT",
+            }),
+            databases.updateDocument(db, itemsCollection, itemId, {
+              status: "UNSOLD",
+              buyerName: "", // Avoid setting it to null
+            }),
+          ]);
+      
           return { success: true };
         } catch (error) {
           console.log("Error in RejectReq:", error);
@@ -263,7 +269,8 @@ export const useAdminStore = create<AdminStore>()(
             error: error instanceof AppwriteException ? error : null,
           };
         }
-      },
+      }
+      
       
     })),
     {

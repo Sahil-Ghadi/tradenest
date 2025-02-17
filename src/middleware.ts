@@ -1,28 +1,38 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
 import getOrCreateDB from "./models/server/dbSet";
 import getOrCreateStorage from "./models/server/storageSet";
 
-export async function middleware(request: NextRequest) {
-//   // Perform any necessary setup
-//   await Promise.all([getOrCreateDB(), getOrCreateStorage()]);
+const protectedRoutes = ["/item"];
+const authRoutes = ["/login", "/signup"];
 
-//   // Define protected routes
-//    const protectedRoutes = ["/admin", "/item", "/addItem","/dashboard"];
+let isInitialized = false; // Ensures DB and Storage run only once
 
-//   // Check if the current path is a protected route
-//    if (protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))) {
-//     const authToken = request.cookies.get("authToken")?.value; // Replace with your actual auth method
-
-//     if (!authToken) {
-//     // Redirect to login if not authenticated
-//     return NextResponse.redirect(new URL("/login", request.url));
-//    }
-//  }
-
-//   return NextResponse.next();
-// }
-
-return NextResponse.next();
+async function initializeOnce() {
+    if (!isInitialized) {
+        await Promise.all([getOrCreateDB(), getOrCreateStorage()]);
+        isInitialized = true;
+    }
 }
+
+export async function middleware(request: NextRequest) {
+    // Ensure DB & Storage run only once
+    await initializeOnce();
+
+    // const token = request.cookies.get(`a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`)?.value;
+    
+    // if (!token) {
+    //     return NextResponse.redirect(new URL('/login', request.url)); // Redirect if no token
+    // }
+
+    return NextResponse.next(); // Allow access if token exists
+}
+export const config = {
+    matcher: [
+        '/',
+        '/dashboard',
+        '/addItem',
+        '/admin',
+        '/myOrders'
+    ],
+};

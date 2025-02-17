@@ -1,18 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RequestList } from "@/components/request-list";
 import type { Request } from "@/types/request";
 import { useAdminStore } from "@/store/adminStore";
 import { OrderList } from "@/components/order-list";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
   const { GetMyOrders } = useAdminStore();
+  const {user} = useAuthStore()
   const [requests, setRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
+    if(!user){
+      router.push("/login")
+    }
     async function fetchRequests() {
       setLoading(true);
       setError(null);
@@ -28,7 +34,7 @@ export default function AdminPage() {
       setLoading(false);
     }
     fetchRequests();
-  }, [GetMyOrders]);
+  }, [GetMyOrders,router,user]);
 
   return (
     <div className="mx-4 sm:mx-10">

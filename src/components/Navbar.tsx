@@ -11,7 +11,9 @@ const Navbar = () => {
 
   const logoutfn = async () => {
     await logout();
-    router.push("/")
+    router.push("/login")
+    setMenuOpen(false);
+
   }
 
   const navItems = [
@@ -75,7 +77,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown Menu - Only shown when menuOpen is true */}
       {menuOpen && (
-        <div className="z-10 absolute top-16 right-6 w-48 bg-white shadow-2xl rounded-lg p-2 lg:hidden">
+        <div className="absolute z-30 top-16 right-6 w-48 bg-white shadow-2xl rounded-lg p-2 lg:hidden">
           {navItems.map(
             (item) =>
               item.active && (
@@ -93,10 +95,7 @@ const Navbar = () => {
           )}
           {user && (
             <button
-              onClick={() => {
-                logout();
-                setMenuOpen(false);
-              }}
+              onClick={logoutfn}
               className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-md"
             >
               Logout

@@ -1,41 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 
 export default function LoginForm() {
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+  const [user, setUser] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const { login } = useAuthStore();
-  const router = useRouter()
+  const [isMounted, setIsMounted] = useState(false);
+  
+  const router = useRouter();
+  const { login } = useAuthStore();  // Zustand store
+
+  // ✅ Fix hydration error by ensuring Zustand only runs on the client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Avoid rendering until the component is mounted
+  if (!isMounted) return null;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const email = user.email;
-    const password = user.password;
-
-    if (!email || !password) {
-      setError(() => "Please fill out all fields");
+    
+    if (!user.email || !user.password) {
+      setError("Please fill out all fields");
       return;
     }
 
-    setIsLoading(() => true);
-    setError(() => "");
+    setIsLoading(true);
+    setError("");
 
-    const loginResponse = await login(email.toString(), password.toString());
-    if (loginResponse.error) {
-      setError(() => loginResponse.error!.message);
+    try {
+      const loginResponse = await login(user.email, user.password);
+      if (loginResponse.error) {
+        setError(loginResponse.error.message);
+      } else {
+        router.push("/");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
     }
 
-    setIsLoading(() => false);
-    router.push('/')
+    setIsLoading(false);
   };
 
   return (
@@ -73,9 +82,10 @@ export default function LoginForm() {
       <div className="flex items-center justify-center mb-4">
         <button
           type="submit"
+          disabled={isLoading}
           className="w-[300px] h-[42px] flex justify-center items-center py-2 px-4 rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          Sign in
+          {isLoading ? "Logging in..." : "Log in"}
         </button>
       </div>
 
@@ -87,7 +97,7 @@ export default function LoginForm() {
           href="/signup"
           className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-500"
         >
-          {isLoading ? "Logging up..." : "Log in"}
+          Sign Up
         </Link>
       </div>
     </form>
