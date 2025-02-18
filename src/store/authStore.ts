@@ -4,7 +4,7 @@ import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 
 import { AppwriteException, ID, Models } from "appwrite";
-import { account } from "@/models/client/config";
+import { account } from "@/models/server/config";
 
 interface AuthStore {
   session: Models.Session | null;

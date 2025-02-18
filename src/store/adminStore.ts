@@ -4,7 +4,7 @@ import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 import { useAuthStore } from "./authStore";
 import { AppwriteException, ID, Models, Query } from "appwrite";
-import { databases, storage } from "@/models/client/config";
+import { databases, storage } from "@/models/server/config";
 import { db, ItemAttachmentBucket, itemsCollection, requestCollection } from "@/models/name";
 import { Item } from "@/types/item";
 import { Request } from "@/types/request";
