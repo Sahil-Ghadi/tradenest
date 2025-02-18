@@ -6,7 +6,7 @@ const Dashboard = () => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center w-full p-6 min-h-screen bg-white">
+    <div className="flex flex-col items-center w-full p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-screen">
         {/* Admin Panel */}
         <div className="flex flex-col justify-around items-center bg-slate-700 p-6 rounded-2xl border border-gray-400 shadow-md w-full">
