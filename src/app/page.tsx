@@ -22,7 +22,9 @@ export default function Home() {
       try {
         setLoading(true);
         const data = await GetItems();
-        setItems(Array.isArray(data.data.documents) ? data.data.documents : []);
+        console.log(data);
+        
+        setItems(Array.isArray(data.data?.documents) ? data.data.documents : []);
       } catch (error) {
         console.error("Error fetching items:", error);
         setItems([]);

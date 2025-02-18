@@ -6,6 +6,8 @@ import { useAuthStore } from "./authStore";
 import { AppwriteException, ID, Models, Query } from "appwrite";
 import { databases, storage } from "@/models/client/config";
 import { db, ItemAttachmentBucket, itemsCollection, requestCollection } from "@/models/name";
+import { Item } from "@/types/item";
+import { Request } from "@/types/request";
 
 interface AdminStore {
   user: Models.User<Models.Preferences> | null;
@@ -14,17 +16,17 @@ interface AdminStore {
 
   GetItems(): Promise<{
     success:boolean,
-    data?:any,
+    data?:{documents : Item[]},
     error?: AppwriteException | null;
   }>;
   GetMyOrders(): Promise<{
     success:boolean,
-    data?:any,
+    data?: { documents: Request[] },
     error?: AppwriteException | null;
   }>;
   GetRequest(): Promise<{
     success:boolean,
-    data?:any,
+    data?: { documents: Request[] },
     error?: AppwriteException | null;
   }>;
   Buyitem(
@@ -84,7 +86,18 @@ export const useAdminStore = create<AdminStore>()(
               Query.equal("status", "REQUESTED")
             ])
           ]);
-          return { success: true, data: items };
+          const formattedItems: Item[] = items.documents.map((doc) => ({
+            $id: doc.$id,
+            name: doc.name,
+            price: doc.price,
+            sellerName: doc.sellerName,
+            buyerName: doc.buyerName ?? "", // Ensure optional field has a default value
+            status: doc.status,
+            $createdAt: doc.$createdAt, // Retain Appwrite metadata
+            $updatedAt: doc.$updatedAt,
+          }));
+      
+          return { success: true, data: { documents: formattedItems } };
         } catch (error) {
           console.log("Error in GetItems:", error);
           return {
@@ -101,7 +114,19 @@ export const useAdminStore = create<AdminStore>()(
           const req = await databases.listDocuments(db, requestCollection, [
             Query.equal("buyerName", user.name),
           ]);
-          return { success: true, data: req };
+        const formattedOrders: Request[] = req.documents.map((doc) => ({
+      $id: doc.$id,
+      Itemname: doc.Itemname, // Keep field names matching `Request`
+      price: doc.price,
+      itemId: doc.itemId,
+      sellerName: doc.sellerName,
+      buyerName: doc.buyerName,
+      status: doc.status,
+      $createdAt: doc.$createdAt,
+      $updatedAt: doc.$updatedAt,
+    }));
+
+    return { success: true, data: { documents: formattedOrders } };
         } catch (error) {
           console.log("Error in GetItems:", error);
           return {
@@ -119,7 +144,19 @@ export const useAdminStore = create<AdminStore>()(
           const requests = await databases.listDocuments(db, requestCollection, [
             Query.equal("sellerName", user.name),
           ]);
-          return { success: true, data: requests };
+          const formattedRequests: Request[] = requests.documents.map((doc) => ({
+            $id: doc.$id,
+            Itemname: doc.Itemname, 
+            price: doc.price,
+            itemId: doc.itemId,
+            sellerName: doc.sellerName,
+            buyerName: doc.buyerName,
+            status: doc.status,
+            $createdAt: doc.$createdAt,
+            $updatedAt: doc.$updatedAt,
+          }));
+      
+          return { success: true, data: { documents: formattedRequests } };
         } catch (error) {
           console.log("Error in GetRequest:", error);
           return {

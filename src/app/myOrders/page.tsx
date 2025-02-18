@@ -26,7 +26,7 @@ export default function AdminPage() {
       const data = await GetMyOrders();
 
       if (data.success) {
-        setRequests(Array.isArray(data.data.documents) ? data.data.documents : []);
+        setRequests(Array.isArray(data.data?.documents) ? data.data.documents: []);
       } else {
         setError(data.error?.message || "Failed to fetch requests");
       }

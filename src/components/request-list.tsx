@@ -68,8 +68,8 @@ export function RequestList({ requests: initialRequests }: RequestListProps) {
         )
       );
       console.log("Rejected successfully");
-    } catch (error: any) {
-      console.log("reject success");
+    } catch (error) {
+      console.log("reject success",error);
     } finally {
       setPendingAction(null);
     }

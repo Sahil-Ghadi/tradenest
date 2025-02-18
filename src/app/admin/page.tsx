@@ -19,7 +19,7 @@ export default function AdminPage() {
       const data = await GetRequest();
 
       if (data.success) {
-        setRequests(Array.isArray(data.data.documents) ? data.data.documents : []);
+        setRequests(Array.isArray(data.data?.documents) ? data.data.documents : []);
       } else {
         setError(data.error?.message || "Failed to fetch requests");
       }

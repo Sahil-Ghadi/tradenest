@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 import getOrCreateDB from "./models/server/dbSet";
 import getOrCreateStorage from "./models/server/storageSet";
 
@@ -13,11 +12,11 @@ async function initializeOnce() {
     }
 }
 
-export async function middleware(request: NextRequest) {
+export async function middleware() {
     await initializeOnce();
 
     
-    return NextResponse.next(); // Allow access if token exists
+    return NextResponse.next(); // Allow access if token exists 
 }
 export const config = {
     matcher: [
