@@ -26,7 +26,7 @@ export default function AdminPage() {
       const data = await GetMyOrders();
 
       if (data.success) {
-        let fetchedRequests = Array.isArray(data.data?.documents) ? data.data.documents: [];
+        const fetchedRequests = Array.isArray(data.data?.documents) ? data.data.documents: [];
         
         fetchedRequests.sort((a, b) => new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime());
 

@@ -24,7 +24,7 @@ export default function Home() {
         const data = await GetItems();
         console.log(data);
         
-        let fetchedItems = Array.isArray(data.data?.documents) ? data.data.documents : [];
+        const fetchedItems = Array.isArray(data.data?.documents) ? data.data.documents : [];
 
         fetchedItems.sort((a, b) => new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime());
 
