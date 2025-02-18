@@ -19,7 +19,11 @@ export default function AdminPage() {
       const data = await GetRequest();
 
       if (data.success) {
-        setRequests(Array.isArray(data.data?.documents) ? data.data.documents : []);
+        let fetchedRequests = Array.isArray(data.data?.documents) ? data.data.documents: [];
+        
+        fetchedRequests.sort((a, b) => new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime());
+
+        setRequests(fetchedRequests);
       } else {
         setError(data.error?.message || "Failed to fetch requests");
       }

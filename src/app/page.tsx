@@ -24,7 +24,11 @@ export default function Home() {
         const data = await GetItems();
         console.log(data);
         
-        setItems(Array.isArray(data.data?.documents) ? data.data.documents : []);
+        let fetchedItems = Array.isArray(data.data?.documents) ? data.data.documents : [];
+
+        fetchedItems.sort((a, b) => new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime());
+
+        setItems(fetchedItems);
       } catch (error) {
         console.error("Error fetching items:", error);
         setItems([]);

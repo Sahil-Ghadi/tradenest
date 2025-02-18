@@ -6,5 +6,5 @@ export interface Request {
   sellerName: string;
   status: "PENDING" | "APPROVE" | "REJECT";
   price:number;
-  //createdAt: string;
+  $createdAt: string;
 }

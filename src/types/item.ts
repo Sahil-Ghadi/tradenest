@@ -4,5 +4,7 @@ export interface Item{
     buyerName: string;
     sellerName: string;
     price:number;
-    status: "SOLD" | "UNSOLD" | "REQUESTED"
+    status: "SOLD" | "UNSOLD" | "REQUESTED",
+    $createdAt: string
+
 }
