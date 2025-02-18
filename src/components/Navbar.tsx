@@ -46,8 +46,8 @@ const Navbar = () => {
                 <button
                   onClick={() => router.push(item.slug)}
                   disabled={pathname === item.slug} // Disable if user is on that page
-                  className={`h-[40px] w-[120px] inline-flex justify-center items-center py-2 px-4 rounded-lg shadow-sm text-sm font-medium 
-                  ${pathname === item.slug ? "bg-blue-900 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 active:bg-blue-800"} 
+                  className={`h-[40px] w-[110px] inline-flex justify-center items-center py-2 px-4 rounded-lg shadow-sm text-sm font-medium 
+                  ${pathname === item.slug ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 active:bg-blue-800"} 
                   text-white hover:outline-blue-700 hover:outline-dotted hover:outline-3 focus:outline-none focus:ring-blue-500 active:scale-90`}
                 >
                   {item.name}
@@ -59,7 +59,7 @@ const Navbar = () => {
           <li>
             <button
               onClick={logout}
-              className="inline-block h-[40px] w-[120px]  py-2 px-4 bg-red-600 text-white rounded-lg hover:bg-red-700 hover:drop-shadow-lg active:scale-90 hover:outline-red-600 hover:outline-dotted hover:outline-3"
+              className="inline-block w-auto h-[42px] py-2 px-4 bg-red-600 text-white rounded-2xl hover:bg-red-700 hover:drop-shadow-lg active:scale-90 hover:outline-red-600 hover:outline-dotted hover:outline-3"
             >
               Logout
             </button>
